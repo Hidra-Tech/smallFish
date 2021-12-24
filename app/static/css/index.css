@@ -134,7 +134,7 @@ p {
     background-color: white;
   }
 
-  .button-open {
+  .app-option {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -143,6 +143,12 @@ p {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .app-name {
+      display: inline;
+      margin-right: 10px;
   }
 
 
