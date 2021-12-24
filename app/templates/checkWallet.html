@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Check Wallet</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/checkWallet.css') }}">
   </head>
   <body>
     <div class="center" id="wrapper">
@@ -19,6 +19,6 @@
         </div>
       </div>
     </div>
-    <script src="script.js"></script>
-  </body>
+    <script type="text/javascript"
+    src="{{ url_for('static', filename='js/checkWallet.js') }}"></script>  </body>
 </html>
