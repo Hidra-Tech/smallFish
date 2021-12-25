@@ -4,25 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Check Wallet</title>
+    <title> Sardinha Mecânica - Check Wallet</title>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/checkWallet.css') }}">
   </head>
   <body>
       <div class="line"> 
-        <img class="logo-img" src="{{ url_for('static',filename='images/tunna.png') }}">
+        <a href="{{ url_for('index') }}"><img class="logo-img" src="{{ url_for('static',filename='images/tunna.png') }}"></a>
       </div>
       
       <div class="app-name">
         <h1>Check Wallet</h1>
       </div>
-      <div class="el">
-        <div class="el-1">
-          <textarea class="wallet"> </textarea>
-        </div>
-        <div class="el-2">
-            <button class="btn check">Check</button>
-        </div>
-      </div>
+        <form class="container" action="{{ url_for('checkWallet') }}" method="POST">
+              <input class="address" type="text" name="address">
+              <input class="button-app" type="submit" value="Check">
+        </form> 
     <script type="text/javascript"
     src="{{ url_for('static', filename='js/checkWallet.js') }}"></script>  </body>
 </html>
