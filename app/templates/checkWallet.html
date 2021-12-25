@@ -8,17 +8,21 @@
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/checkWallet.css') }}">
   </head>
   <body>
-    <div class="center" id="wrapper">
-      <h1>Check Wallet</h1>
-      <div class="grid-container">
-        <div class="grid-item">
+      <div class="line"> 
+        <img class="logo-img" src="{{ url_for('static',filename='images/tunna.png') }}">
+      </div>
+      
+      <div class="app-name">
+        <h1>Check Wallet</h1>
+      </div>
+      <div class="el">
+        <div class="el-1">
           <textarea class="wallet"> </textarea>
         </div>
-        <div class="grid-item">
-          <button class="btn check">Check</button>
+        <div class="el-2">
+            <button class="btn check">Check</button>
         </div>
       </div>
-    </div>
     <script type="text/javascript"
     src="{{ url_for('static', filename='js/checkWallet.js') }}"></script>  </body>
 </html>
