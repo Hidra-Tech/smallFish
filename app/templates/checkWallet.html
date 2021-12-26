@@ -15,10 +15,13 @@
       <div class="app-name">
         <h1>Check Wallet</h1>
       </div>
-        <form class="container" action="{{ url_for('checkWallet') }}" method="POST">
-              <input class="address" type="text" name="address">
-              <input class="button-app" type="submit" value="Check">
-        </form> 
-    <script type="text/javascript"
-    src="{{ url_for('static', filename='js/checkWallet.js') }}"></script>  </body>
+
+      
+      <form id="form" class="container" >
+        <input id="text"  class="address" type="text" name="address">
+        <input class="button-app" type="submit" value="Check">
+      </form> 
+      <div id="log"></div>
+    <script type="text/javascript"    src="{{ url_for('static', filename='js/ws.js') }}"></script> 
+  </body>
 </html>
