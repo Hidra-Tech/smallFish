@@ -17,26 +17,8 @@ web3_infura = Web3(Web3.HTTPProvider(infura_url))
 
 @app.route('/')
 @app.route('/index')
-def index():
-    return render_template('index.html')
-
-# @app.route('/checkWallet', methods=['GET', 'POST'])
-# def checkWallet():
-#     if request.method=="POST":
-#         address = request.form.get("address")
-#         kwargs = {
-#             'address': address
-#         }
-#         result = bnb_balance(address)
-#         print(result)
-#     else:
-#         kwargs={}
-
-#     return render_template('checkWallet.html', **kwargs)
-
-@app.route('/checkWallet')
 def checkWallet():
-    return render_template('checkWallet.html')
+    return render_template('index.html')
 
 def bnb_balance(address:str, currency:str):
     # BNB balance
