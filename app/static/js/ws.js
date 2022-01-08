@@ -1,21 +1,41 @@
 "use strict";
 
-const log = (text) => {
-    let output = `<div class="result"> <h2>Saldo em BNB:</h2> ${text}</div>`
-    document.getElementById('log').innerHTML += output;
-  };
+const socket = new WebSocket("ws://" + location.host + "/echo");
 
-const socket = new WebSocket('ws://' + location.host + '/echo');
+socket.addEventListener("message", (ev) => {
+  const addressField = document.getElementById("address");
+  const walletChart = document.getElementById("log").getContext("2d");
 
-socket.addEventListener('message', ev => {
-    log(ev.data);
+  const walletResults = new Chart(walletChart, {
+    type: "polarArea",
+    data: {
+      labels: ["BNB"],
+      datasets: [
+        {
+          label: "Balance",
+          data: [ev.data],
+          backgroundColor: ["rgb(255,255,0, 0.5)"],
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: `Balance of ${addressField.value}`,
+        fontSize: 24,
+      },
+    },
+  });
+  addressField.value = "";
 });
-  
-document.getElementById('form').onsubmit = ev => {
-    ev.preventDefault();
-    const textField = document.getElementById('text');
-    // devolve texto enviado pelo client
-    // log('>>> ' + textField.value);
-    socket.send(textField.value);
-    textField.value = '';
+
+document.getElementById("form").onsubmit = (ev) => {
+  ev.preventDefault();
+  const currencyField = document.querySelector(".currency");
+  const addressField = document.getElementById("address");
+  const clientData = {
+    address: addressField.value,
+    currency: currencyField.value,
   };
+  socket.send(JSON.stringify(clientData));
+};

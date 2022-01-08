@@ -4,24 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title> Sardinha Mecânica - Check Wallet</title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/checkWallet.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <title>Sardinha Mecânica - Check Wallet</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/checkWallet.css') }}"
+    />
   </head>
   <body>
-      <div class="line"> 
-        <a href="{{ url_for('index') }}"><img class="logo-img" src="{{ url_for('static',filename='images/tunna.png') }}"></a>
-      </div>
-      
-      <div class="app-name">
-        <h1>Check Wallet</h1>
-      </div>
+    <div class="dropdown">
+      <!-- <label for="currency-names">Choose a currency:</label> -->
+      <select class="currency" name="currency" id="currency">
+        <option value="BRL">BRL</option>
+        <option value="USD">USD</option>
+      </select>
+    </div>
 
-      
-      <form id="form" class="container" >
-        <input id="text"  class="address" type="text" name="address">
-        <input class="button-app" type="submit" value="Check">
-      </form> 
-      <div id="log"></div>
-    <script type="text/javascript"    src="{{ url_for('static', filename='js/ws.js') }}"></script> 
+    <div class="line">
+      <a href="{{ url_for('index') }}"
+        ><img
+          class="logo-img"
+          src="{{ url_for('static',filename='images/tunna.png') }}"
+      /></a>
+    </div>
+
+    <div class="app-name">
+      <h1>Check Wallet</h1>
+    </div>
+
+    <form id="form" class="container">
+      <input id="address" class="address" type="text" name="address" />
+      <input class="button-app" type="submit" value="Check" />
+    </form>
+    <div class="result">
+      <canvas id="log"> </canvas>
+    </div>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/ws.js') }}"
+    ></script>
   </body>
 </html>
