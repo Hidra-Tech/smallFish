@@ -1,24 +1,31 @@
 "use strict";
 
-const socket = new WebSocket("ws://" + location.host + "/echo");
+const socket = io();
 
-socket.addEventListener("message", (ev) => {
+socket.on("computation", (serverData) => {
   const addressField = document.getElementById("address");
-  const walletChart = document.getElementById("log").getContext("2d");
+  const walletChart = document
+    .getElementById("crypto-balance")
+    .getContext("2d");
 
   const walletResults = new Chart(walletChart, {
-    type: "polarArea",
+    type: "bar",
     data: {
-      labels: ["BNB"],
+      labels: ["BNB", "ETH"],
       datasets: [
         {
           label: "Balance",
-          data: [ev.data],
-          backgroundColor: ["rgb(255,255,0, 0.5)"],
+          data: [serverData.bnb_balance, serverData.eth_balance],
+          backgroundColor: ["rgb(255,255,0, 0.5)", "rgb(88,88,88)"],
         },
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      legend: {
+        display: false,
+      },
       title: {
         display: true,
         text: `Balance of ${addressField.value}`,
@@ -37,5 +44,5 @@ document.getElementById("form").onsubmit = (ev) => {
     address: addressField.value,
     currency: currencyField.value,
   };
-  socket.send(JSON.stringify(clientData));
+  socket.emit("form", clientData);
 };

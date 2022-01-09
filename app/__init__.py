@@ -1,9 +1,9 @@
 from flask import Flask
 from config import Config
-from flask_sock import Sock
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
-sock = Sock(app)
 app.config.from_object(Config)
+socketio = SocketIO(app)
 
 from app import routes
