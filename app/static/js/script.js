@@ -2,8 +2,10 @@
 
 const socket = io();
 
+const mainContainer = document.querySelector(".main-container");
+
 socket.on("computation", (serverData) => {
-  const addressField = document.getElementById("address");
+  const addressField = document.querySelector(".address");
   const walletChart = document
     .getElementById("crypto-balance")
     .getContext("2d");
@@ -22,18 +24,55 @@ socket.on("computation", (serverData) => {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       legend: {
         display: false,
       },
       title: {
-        display: true,
-        text: `Balance of ${addressField.value}`,
+        display: false,
+        text: "Saldo metamask - Crypto",
         fontSize: 24,
       },
     },
   });
+  // set new values for fiels and properties
   addressField.value = "";
+  document.querySelector("#money-balance").style.opacity = 1;
+});
+
+socket.on("errorCrypto", () => {
+  // console.log(error.errorMessage);
+  // Creating and inserting elements
+  const message = document.createElement("div");
+  message.classList.add("error-message");
+  message.classList.add("modal");
+  // message.textContent = 'We use cookied for improved functionality and analytics.';
+  message.innerHTML =
+    "It looks like we got a problem with coingecko API. Please, wait some minutes and try again later.";
+  const overlay = document.createElement("div");
+  overlay.classList.add("overlay");
+  const close = document.createElement("button");
+  close.classList.add("close");
+  close.innerHTML = "&times;";
+
+  mainContainer.append(message);
+  message.append(close);
+  mainContainer.append(overlay);
+
+  const closeModal = () => {
+    message.remove();
+    overlay.remove();
+  };
+
+  overlay.addEventListener("click", closeModal);
+
+  document.querySelector(".close").addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  });
 });
 
 document.getElementById("form").onsubmit = (ev) => {

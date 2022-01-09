@@ -16,37 +16,44 @@
       type="text/css"
       href="{{ url_for('static',filename='css/style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/modal.css') }}"
+    />
   </head>
   <body>
-    <div class="dropdown">
-      <!-- <label for="currency-names">Choose a currency:</label> -->
-      <select class="currency" name="currency" id="currency">
-        <option value="BRL">BRL</option>
-        <option value="USD">USD</option>
-      </select>
-    </div>
+    <div class="main-container">
+      <div class="dropdown">
+        <!-- <label for="currency-names">Choose a currency:</label> -->
+        <select class="currency" name="currency" id="currency">
+          <option value="BRL">BRL</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
 
-    <div class="line">
-      <a href="#"
-        ><img
-          class="logo-img"
-          src="{{ url_for('static',filename='images/tunna.png') }}"
-      /></a>
-    </div>
+      <div class="line">
+        <a href="#"
+          ><img
+            class="logo-img"
+            src="{{ url_for('static',filename='images/tunna.png') }}"
+        /></a>
+      </div>
 
-    <div class="app-name">
-      <h1>Check Wallet</h1>
-    </div>
+      <div class="app-name">
+        <h1>Check Wallet</h1>
+      </div>
 
-    <form id="form" class="container">
-      <input id="address" class="address" type="text" name="address" />
-      <input class="button-app" type="submit" value="Check" />
-    </form>
-    <div
-      class="chart-container"
-      style="position: relative; height: 40vh; width: 80vw"
-    >
-      <canvas id="crypto-balance"> </canvas>
+      <form id="form" class="form-container">
+        <input id="address" class="address" type="text" name="address" />
+        <input class="button-app" type="submit" value="Check" />
+      </form>
+      <div class="first-result">
+        <div id="money-balance"></div>
+        <div class="chart-container">
+          <canvas id="crypto-balance"> </canvas>
+        </div>
+      </div>
     </div>
     <script
       type="text/javascript"

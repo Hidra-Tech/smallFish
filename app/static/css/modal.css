@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .modal {
   position: absolute;
   top: 50%;
@@ -6,7 +10,6 @@
   width: 30%;
   max-height: calc(100vh - 200px);
   overflow-y: auto;
-
   background-color: white;
   padding: 6rem;
   border-radius: 5px;
@@ -23,4 +26,15 @@
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
   z-index: 5;
+}
+
+.close {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  font-size: 5rem;
+  color: #333;
+  cursor: pointer;
+  border: none;
+  background-color: white;
 }
