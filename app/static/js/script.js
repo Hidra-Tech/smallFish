@@ -1,43 +1,32 @@
 "use strict";
 
+import "./countUp.js";
+import "./makeChart.js";
+
 const socket = io();
 
 const mainContainer = document.querySelector(".main-container");
 
 socket.on("computation", (serverData) => {
-  const addressField = document.querySelector(".address");
+  const currencyField = document.querySelector(".currency");
   const walletChart = document
     .getElementById("crypto-balance")
     .getContext("2d");
-
-  const walletResults = new Chart(walletChart, {
-    type: "bar",
-    data: {
-      labels: ["BNB", "ETH"],
-      datasets: [
-        {
-          label: "Balance",
-          data: [serverData.bnb_balance, serverData.eth_balance],
-          backgroundColor: ["rgb(255,255,0, 0.5)", "rgb(88,88,88)"],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-        text: "Saldo metamask - Crypto",
-        fontSize: 24,
-      },
-    },
-  });
+  makeChart(walletChart, serverData);
   // set new values for fiels and properties
-  addressField.value = "";
+  // addressField.value = "";
+  const sectionOneTitle = "Crypto Balance".toUpperCase();
   document.querySelector("#money-balance").style.opacity = 1;
+  document.querySelector(
+    ".section-one"
+  ).innerHTML = `<h2>${sectionOneTitle}</h2>`;
+  document.querySelector(
+    ".balance-currency"
+  ).innerHTML = `<h2>Balance ${currencyField.value.toUpperCase()}</h2>`;
+  document.querySelector(".balance-crypto ").innerHTML =
+    "<h2>Balance by Cryptocurrency</h2>";
+  const amount = serverData.BNB + serverData.ETH;
+  countUp(amount);
 });
 
 socket.on("errorCrypto", () => {
@@ -48,7 +37,7 @@ socket.on("errorCrypto", () => {
   message.classList.add("modal");
   // message.textContent = 'We use cookied for improved functionality and analytics.';
   message.innerHTML =
-    "It looks like we got a problem with coingecko API. Please, wait some minutes and try again later.";
+    "We cannot connect the provided wallet to ethereum or smart chain nodes. Please, check if this wallet is connect to one of these networks. It's also possible that we got a problem with coingecko API. In the later case, wait some minutes and try again later.";
   const overlay = document.createElement("div");
   overlay.classList.add("overlay");
   const close = document.createElement("button");

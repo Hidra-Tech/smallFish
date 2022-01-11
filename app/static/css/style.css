@@ -36,7 +36,33 @@ h1 {
 
 .app-name {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.section-one {
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+.section-one-title {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+}
+
+.balance-currency {
+  display: block;
+  text-align: center;
+  width: 900px;
+  margin-left: 100px;
+}
+
+.balance-crypto {
+  text-align: center;
+  display: block;
+  width: 900px;
+  margin-right: 100px;
+  margin-bottom: 100px;
 }
 
 #wrapper {
@@ -82,28 +108,19 @@ h1 {
 .first-result {
   display: flex;
   justify-content: space-around;
-  margin-left: 100px;
-  margin-right: 100px;
+}
+
+.chart {
+  margin-left: 150px;
 }
 
 .chart-container {
   height: 45vh;
   width: 30vw;
+  margin-left: 100px;
 }
 
 #money-balance {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  /* -webkit-animation: spin 5s linear 3; */
-  /* animation: spin 5s linear 3; */
-  animation-fill-mode: forwards;
-  animation-name: spin;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: 3;
   opacity: 0;
 }
 
@@ -145,59 +162,4 @@ h1 {
   border-radius: 10rem;
   cursor: pointer;
   background-color: white;
-}
-
-/* OTHER PEOPLE CSS */
-
-/* CSS */
-.button-app {
-  align-items: center;
-  appearance: none;
-  background-image: radial-gradient(
-    100% 100% at 100% 0,
-    #5adaff 0,
-    #5468ff 100%
-  );
-  border: 0;
-  border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: "JetBrains Mono", monospace;
-  height: 30px;
-  justify-content: center;
-  line-height: 1;
-  list-style: none;
-  overflow: hidden;
-  padding-left: 32px;
-  padding-right: 32px;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition: box-shadow 0.15s, transform 0.15s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow, transform;
-  font-size: 18px;
-}
-
-.button-app:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-}
-
-.button-app:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
-
-.button-app:active {
-  box-shadow: #3c4fe0 0 3px 7px inset;
-  transform: translateY(2px);
 }

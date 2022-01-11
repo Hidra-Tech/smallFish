@@ -21,6 +21,16 @@
       type="text/css"
       href="{{ url_for('static',filename='css/modal.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/countUp.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/buttons.css') }}"
+    />
   </head>
   <body>
     <div class="main-container">
@@ -48,16 +58,32 @@
         <input id="address" class="address" type="text" name="address" />
         <input class="button-app" type="submit" value="Check" />
       </form>
+      <div class="section-one"></div>
+
+      <div class="section-one-title">
+        <div class="balance-currency"></div>
+        <div class="balance-crypto"></div>
+      </div>
       <div class="first-result">
-        <div id="money-balance"></div>
+        <div class="chart" id="money-balance" data-percent="50"></div>
         <div class="chart-container">
           <canvas id="crypto-balance"> </canvas>
         </div>
       </div>
+      <!-- <div>The above results shows only </div> -->
+      <!-- <div class="section-two">TOKEN BALANCE</div> -->
     </div>
     <script
-      type="text/javascript"
+      type="module"
       src="{{ url_for('static', filename='js/script.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/countUp.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/makeChart.js') }}"
     ></script>
   </body>
 </html>
