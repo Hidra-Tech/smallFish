@@ -1,5 +1,5 @@
-const countUp = (amount) => {
-  let el = document.getElementById("money-balance"); // get canvas
+const countUp = ({amount, id}) => {
+  let el = document.getElementById(id); // get canvas
 
   let options = {
     percent: el.getAttribute("data-percent") || 25,

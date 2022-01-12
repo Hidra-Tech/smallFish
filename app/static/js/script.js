@@ -13,29 +13,24 @@ socket.on("computation", (serverData) => {
     .getElementById("crypto-balance")
     .getContext("2d");
   makeChart(walletChart, serverData);
-  // set new values for fiels and properties
-  // addressField.value = "";
-  const sectionOneTitle = "Crypto Balance".toUpperCase();
-  document.querySelector("#money-balance").style.opacity = 1;
-  document.querySelector(
-    ".section-one"
-  ).innerHTML = `<h2>${sectionOneTitle}</h2>`;
-  document.querySelector(
-    ".balance-currency"
-  ).innerHTML = `<h2>Balance ${currencyField.value.toUpperCase()}</h2>`;
-  document.querySelector(".balance-crypto ").innerHTML =
-    "<h2>Balance by Cryptocurrency</h2>";
+  // set new values for fields and properties
+  writeSection({
+    id : "money-balance",
+    section : "one",
+    sectionTitle : "crypto balance",
+    leftId : "balance-currency",
+    rightId : "balance-crypto",
+    coinKind : currencyField.value}
+  );
   const amount = serverData.BNB + serverData.ETH;
-  countUp(amount);
+  countUp({amount: amount, id: "money-balance"});
 });
 
 socket.on("errorCrypto", () => {
-  // console.log(error.errorMessage);
   // Creating and inserting elements
   const message = document.createElement("div");
   message.classList.add("error-message");
   message.classList.add("modal");
-  // message.textContent = 'We use cookied for improved functionality and analytics.';
   message.innerHTML =
     "We cannot connect the provided wallet to ethereum or smart chain nodes. Please, check if this wallet is connect to one of these networks. It's also possible that we got a problem with coingecko API. In the later case, wait some minutes and try again later.";
   const overlay = document.createElement("div");
