@@ -39,7 +39,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-.section-one {
+.section {
   text-align: center;
   margin-bottom: 100px;
 }
@@ -105,9 +105,10 @@ h1 {
   margin-bottom: 100px;
 }
 
-.first-result {
+.result {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 100px;
 }
 
 .chart {
@@ -121,6 +122,10 @@ h1 {
 }
 
 #money-balance {
+  opacity: 0;
+}
+
+#token-balance {
   opacity: 0;
 }
 

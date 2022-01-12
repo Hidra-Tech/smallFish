@@ -2,28 +2,46 @@
 
 import "./countUp.js";
 import "./makeChart.js";
+import "./usefulFunctions.js";
 
 const socket = io();
 
 const mainContainer = document.querySelector(".main-container");
 
 socket.on("computation", (serverData) => {
+  const cryptoData = serverData["crypto"];
+  const tokenData = serverData["token"];
   const currencyField = document.querySelector(".currency");
-  const walletChart = document
+  // set values for first section
+  const cryptoChart = document
     .getElementById("crypto-balance")
     .getContext("2d");
-  makeChart(walletChart, serverData);
-  // set new values for fields and properties
+  makeChart(cryptoChart, cryptoData);
   writeSection({
-    id : "money-balance",
-    section : "one",
-    sectionTitle : "crypto balance",
-    leftId : "balance-currency",
-    rightId : "balance-crypto",
-    coinKind : currencyField.value}
-  );
-  const amount = serverData.BNB + serverData.ETH;
-  countUp({amount: amount, id: "money-balance"});
+    id: "money-balance",
+    section: "one",
+    sectionTitle: "crypto balance",
+    leftId: "balance-currency",
+    rightId: "balance-crypto",
+    coinKind: currencyField.value,
+  });
+  const amount_crypto = sumNumberValues(cryptoData);
+  countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
+  // set values for second section
+  const tokenChart = document.getElementById("chart-token").getContext("2d");
+  makeChart(tokenChart, tokenData);
+  writeSection({
+    id: "token-balance",
+    section: "two",
+    sectionTitle: "token balance",
+    leftId: "balance-currency",
+    rightId: "balance-crypto",
+    coinKind: currencyField.value,
+  });
+  // const tokenPositive = Object.keys(tokenData).filter((x)=>tokenData.x!='')
+  const amount_token = sumNumberValues(tokenData);
+  console.log(amount_token);
+  countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
 });
 
 socket.on("errorCrypto", () => {

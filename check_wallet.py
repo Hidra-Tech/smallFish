@@ -7,7 +7,7 @@ def crypto_balance(address: str, id: str, currency: str, web3_provider: str):
     """
     Returns ETH, BTC and BNB balance of given wallet
 
-    address: metamask address
+    address: metamask wallet address
     id: coingecko coin' id
     currency: BRL|USD
     web3_provider: infura | bsc
@@ -32,13 +32,19 @@ def token_balance(
 ):
     """
     Returns any token balance based on contract and abi
+
+    address: metamask wallet address
+    contract: token contract address
+    id: coingecko coin' id
+    currency: BRL|USD
+    web3_provider: infura | bsc
     """
     try:
-        token_address = web3.toChecksumAddress(contract)
-        wallet_address = address
-        token = web3.eth.contract(address=token_address, abi=abi)
+        token_address = web3_provider.toChecksumAddress(contract)
+        wallet_address = web3_provider.toChecksumAddress(address)
+        token = web3_provider.eth.contract(address=token_address, abi=abi)
         token_balance = token.functions.balanceOf(wallet_address).call()
-        qtd = float(web3.fromWei(token_balance, "ether").to_eng_string())
+        qtd = float(web3_provider.fromWei(token_balance, "ether").to_eng_string())
         price = cg.get_price(ids=id, vs_currencies=currency)[id][currency]
         balance = qtd * price
     except Exception as e:

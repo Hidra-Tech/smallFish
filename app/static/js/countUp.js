@@ -1,4 +1,4 @@
-const countUp = ({amount, id}) => {
+const countUp = ({ amount, id, color }) => {
   let el = document.getElementById(id); // get canvas
 
   let options = {
@@ -28,11 +28,11 @@ const countUp = ({amount, id}) => {
 
   let radius = (options.size - options.lineWidth) / 2;
 
-  let drawCircle = function (color, lineWidth, percent) {
+  let drawCircle = function (colorCircle, lineWidth, percent) {
     percent = Math.min(Math.max(0, percent || 1), 1);
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, Math.PI * 2 * percent, false);
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = colorCircle;
     ctx.lineCap = "round"; // butt, round or square
     ctx.lineWidth = lineWidth;
     ctx.stroke();
@@ -40,7 +40,7 @@ const countUp = ({amount, id}) => {
 
   drawCircle("#efefef", options.lineWidth, 100 / 100);
 
-  const color = "#5468ff";
+  // const color = "#5468ff";
   let i = 0;
   let int = setInterval(function () {
     i++;

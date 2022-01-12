@@ -31,10 +31,17 @@ const makeChart = (walletChart, serverData) => {
   });
 };
 
-const writeSection = ({id, section, sectionTitle, leftId, rightId, coinKind}) => {
+const writeSection = ({
+  id,
+  section,
+  sectionTitle,
+  leftId,
+  rightId,
+  coinKind,
+}) => {
   document.getElementById(id).style.opacity = 1;
   document.querySelector(
-    `.section-${section}`
+    `.${section}`
   ).innerHTML = `<h2>${sectionTitle.toUpperCase()}</h2>`;
   document.querySelector(
     `.${leftId}`
