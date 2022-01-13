@@ -145,6 +145,11 @@ p {
   margin-bottom: 20px;
 }
 
+#open-cw {
+  float: right;
+  margin-right: 0;
+}
+
 /* .app-name {
   display: inline;
   margin-right: 10px;

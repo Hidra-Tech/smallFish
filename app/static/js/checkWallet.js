@@ -7,50 +7,87 @@ import "./usefulFunctions.js";
 const socket = io();
 
 const mainContainer = document.querySelector(".main-container");
+let queryType;
 
 socket.on("computation", (serverData) => {
-  const cryptoData = serverData["crypto"];
-  const tokenData = serverData["token"];
   const currencyField = document.querySelector(".currency");
-  // set values for first section
-  const cryptoChart = document
-    .getElementById("crypto-balance")
-    .getContext("2d");
   const backgroundColors = [
-    "#6b5b95",
     "#feb236",
+    "#6b5b95",
     "#d64161",
     "#ff7b25",
     "#3e4444",
     "#82b74b",
     "#405d27",
   ];
-  makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
-  writeSection({
-    id: "money-balance",
-    section: "one",
-    sectionTitle: "crypto balance",
-    leftId: "balance-currency",
-    rightId: "balance-crypto",
-    coinKind: currencyField.value,
-  });
-  const amount_crypto = sumNumberValues(cryptoData);
-  countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
-  // set values for second section
-  const tokenChart = document.getElementById("chart-token").getContext("2d");
-  makeChart(tokenChart, tokenData, "doughnut", backgroundColors);
-  writeSection({
-    id: "token-balance",
-    section: "two",
-    sectionTitle: "token balance",
-    leftId: "balance-currency",
-    rightId: "balance-crypto",
-    coinKind: currencyField.value,
-  });
-  // const tokenPositive = Object.keys(tokenData).filter((x)=>tokenData.x!='')
-  const amount_token = sumNumberValues(tokenData);
-  console.log(amount_token);
-  countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
+
+  const reportSection = (coinKind) => {
+    let coinData = serverData[coinKind];
+    const cryptoChart = document
+      .getElementById("crypto-balance")
+      .getContext("2d");
+    // remove "queryType" property
+    cryptoData = removePropFromObject(cryptoData, "queryType");
+    makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
+    writeSection({
+      id: "money-balance",
+      section: "one",
+      sectionTitle: "crypto balance",
+      leftId: "balance-currency",
+      rightId: "balance-crypto",
+      coinKind: currencyField.value,
+    });
+    const amount_crypto = sumNumberValues(cryptoData);
+    countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
+  };
+
+  // const cryptoSection = () => {
+  //   // set values for first section
+  //   let cryptoData = serverData["crypto"];
+  //   const cryptoChart = document
+  //     .getElementById("crypto-balance")
+  //     .getContext("2d");
+  //   // remove "queryType" property
+  //   cryptoData = removePropFromObject(cryptoData, "queryType");
+  //   makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
+  //   writeSection({
+  //     id: "money-balance",
+  //     section: "one",
+  //     sectionTitle: "crypto balance",
+  //     leftId: "balance-currency",
+  //     rightId: "balance-crypto",
+  //     coinKind: currencyField.value,
+  //   });
+  //   const amount_crypto = sumNumberValues(cryptoData);
+  //   countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
+  // };
+
+  // const tokenSection = () => {
+  //   // set values for second section
+  //   let tokenData = serverData["token"];
+  //   const tokenChart = document.getElementById("chart-token").getContext("2d");
+  //   // remove "queryType" property
+  //   tokenData = removePropFromObject(tokenData, "queryType");
+  //   makeChart(tokenChart, tokenData, "doughnut", backgroundColors);
+  //   writeSection({
+  //     id: "token-balance",
+  //     section: "two",
+  //     sectionTitle: "token balance",
+  //     leftId: "balance-currency",
+  //     rightId: "balance-crypto",
+  //     coinKind: currencyField.value,
+  //   });
+  //   const amount_token = sumNumberValues(tokenData);
+  //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
+  // };
+  if (queryType === "crypto") {
+    cryptoSection();
+  } else if (queryType === "token") {
+    tokenSection();
+  } else if (queryType === "full-report") {
+    cryptoSection();
+    tokenSection();
+  }
 });
 
 socket.on("errorCrypto", () => {
@@ -90,9 +127,11 @@ document.getElementById("form").onsubmit = (ev) => {
   ev.preventDefault();
   const currencyField = document.querySelector(".currency");
   const addressField = document.getElementById("address");
+  queryType = document.querySelector("input[name=query-type]:checked").value;
   const clientData = {
     address: addressField.value,
     currency: currencyField.value,
+    queryType: queryType,
   };
   socket.emit("form", clientData);
 };

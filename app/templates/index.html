@@ -10,6 +10,11 @@
       type="text/css"
       href="{{ url_for('static',filename='css/index.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/buttons.css') }}"
+    />
   </head>
   <body>
     <div class="parent">
@@ -35,39 +40,41 @@
       </nav>
     </div>
 
+    <!-- SOBRE -->
     <div class="modal child-one hidden">
       <button class="close xchild-one">&times;</button>
 
       <h1>O que é o Sardinha Mecânica?</h1>
       <p>
         O <strong>Sardinha Mecânica</strong> é uma iniciativa que busca
-        profissionalizar o ambiente de trabalho de jogadores de jogos NFT, oferecendo
-        infraestrutura para sua atuação. A ideia fundamental do SM é 
-        democratizar as condições de trabalho no ecossistema de jogos NFT. 
-        Atualmente, grandes investidores têm acesso a sofistificados 
-        softwares, como <i>bots</i> que automatizam compra e venda
-         de moedas e mesmo automação de atividades nos jogos. Por outro 
-         lado, muitos jogadores, com menor poder de mercado, fazem todas suas 
-         operações sem auxílio de ferramentas ou usando ferramentas rudimentares, 
-         como planilhas preenchidas manualmente. Nossa proposta é oferecer
-        infraestrutura de software que permita o jogador se concentrar 
-        em sua atividade, ao mesmo tempo que tem controle sobre seus investimentos.
+        profissionalizar o ambiente de trabalho de jogadores de jogos NFT,
+        oferecendo infraestrutura para sua atuação. A ideia fundamental do SM é
+        democratizar as condições de trabalho no ecossistema de jogos NFT.
+        Atualmente, grandes investidores têm acesso a sofistificados softwares,
+        como <i>bots</i> que automatizam compra e venda de moedas e mesmo
+        automação de atividades nos jogos. Por outro lado, muitos jogadores, com
+        menor poder de mercado, fazem todas suas operações sem auxílio de
+        ferramentas ou usando ferramentas rudimentares, como planilhas
+        preenchidas manualmente. Nossa proposta é oferecer infraestrutura de
+        software que permita o jogador se concentrar em sua atividade, ao mesmo
+        tempo que tem controle sobre seus investimentos.
       </p>
 
       <p>
         O modelo de negócios do SM é baseado em um serviço de assinatura que dá
         acesso a um conjunto de web apps. Para ver os apps disponíveis, clique
         no link <i>Tutorial</i>, na página inicial. Se algum app te interessar,
-        clique em <i>Assinatura</i> e assine nosso serviço. A assinatura dá acesso a
-        todos os apps do SM, inclusive os que ainda serão lançados. Uma lista de
-        Apps em desenvolvimento encontram-se na seção <i>Roadmap</i>. 
+        clique em <i>Assinatura</i> e assine nosso serviço. A assinatura dá
+        acesso a todos os apps do SM, inclusive os que ainda serão lançados. Uma
+        lista de Apps em desenvolvimento encontram-se na seção <i>Roadmap</i>.
       </p>
 
       <p>
-        Nossa filosofia é baseada no foco ao cliente e, por essa razão, mantemos canais de
-        comunicação e suporte permanentes. Clique no link <i>Discord</i> para ter
-        acesso ao nosso <i>server</i>. Lá você pode enviar sugestões, relatar problemas
-        ou dificuldades no uso dos apps e fazer elogios.
+        Nossa filosofia é baseada no foco ao cliente e, por essa razão, mantemos
+        canais de comunicação e suporte permanentes. Clique no link
+        <i>Discord</i> para ter acesso ao nosso <i>server</i>. Lá você pode
+        enviar sugestões, relatar problemas ou dificuldades no uso dos apps e
+        fazer elogios.
       </p>
     </div>
 
@@ -78,31 +85,36 @@
       <h1 class="app-name">Check Wallet</h1>
 
       <p>
-          O <strong>Check Wallet</strong> é uma ferramenta que permite o usuário checar o saldo
-          em reais de qualquer Metamask. A checagem do saldo está disponível em três modalidades: 
-          <i>crypto</i>, <i>game tokens</i> e <i>full report</i>. A modalidade 
-          <i>crypto</i> permite acessar o saldo da metamask nas principais criptomoedas, 
-          BNB, Bitcoin e Ethereum. Para acessar os resultados, o usuário precisa apenas fornecer 
-          o endereço público da Metamask. 
+        O <strong>Check Wallet</strong> é uma ferramenta que permite o usuário
+        checar o saldo em reais de qualquer Metamask. A checagem do saldo está
+        disponível em três modalidades: <i>crypto</i>, <i>game tokens</i> e
+        <i>full report</i>. A modalidade <i>crypto</i> permite acessar o saldo
+        da metamask nas principais criptomoedas, BNB, Bitcoin e Ethereum. Para
+        acessar os resultados, o usuário precisa apenas fornecer o endereço
+        público da Metamask.
       </p>
 
       <p>
-          Na modalidade <i>game tokens</i>, além do endereço público da metamask, é necessário informar 
-          quais jogos o usuário gostaria de verificar o saldo de tokens. É importante notar que 
-          o retorno do CW nesse caso refere-se ao saldo das tokens na Metamask e, assim, excluí o saldo
-          de tokens investidas no jogo. Em breve, será possível estimar o investimento total do usuário 
-          nos jogos com a <strong>Track Wallet</strong>, ferramenta a ser lançada pelo SM, conforme <i>Roadmap</i>.
-    </p>
+        Na modalidade <i>game tokens</i>, além do endereço público da metamask,
+        é necessário informar quais jogos o usuário gostaria de verificar o
+        saldo de tokens. É importante notar que o retorno do CW nesse caso
+        refere-se ao saldo das tokens na Metamask e, assim, excluí o saldo de
+        tokens investidas no jogo. Em breve, será possível estimar o
+        investimento total do usuário nos jogos com a
+        <strong>Track Wallet</strong>, ferramenta a ser lançada pelo SM,
+        conforme <i>Roadmap</i>.
+      </p>
 
-    <p>
-        Por fim, ao selecionar a opção <i>full report</i>, o usuário terá acesso ao saldo de crypto e game tokens na 
-        Metamask em questão. Ainda na dúvida de como o <strong>Check Wallet</strong> funciona? Assista o vídeo abaixo, 
-        onde mostramos na prática como a ferramenta funciona.
-    </p>
+      <p>
+        Por fim, ao selecionar a opção <i>full report</i>, o usuário terá acesso
+        ao saldo de crypto e game tokens na Metamask em questão. Ainda na dúvida
+        de como o <strong>Check Wallet</strong> funciona? Assista o vídeo
+        abaixo, onde mostramos na prática como a ferramenta funciona.
+      </p>
 
-      <a class="app-option" href="#">Go to App</a>
-
-    </div>
+      <a class="button-app" id="open-cw" href="{{ url_for('checkWallet') }}"
+        >Go to App</a
+      >
     </div>
 
     <div class="modal child-three hidden">
@@ -121,11 +133,10 @@
         vel scelerisque metus. Praesent ultrices metus at leo volutpat ultrices.
         Quisque et interdum neque.
       </p>
-
+    </div>
 
     <div class="modal child-four hidden">
       <button class="close xchild-four">&times;</button>
-
 
       <h1>Where does it come from?</h1>
       <p>

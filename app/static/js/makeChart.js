@@ -4,7 +4,6 @@ const makeChart = (walletChart, serverData, type, color) => {
   );
   backgroundColors = color.slice(0, coins.length);
   const dataArray = coins.map((x) => serverData[x].toFixed(2));
-  console.log(dataArray);
   const walletResults = new Chart(walletChart, {
     type: type,
     data: {

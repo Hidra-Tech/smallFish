@@ -8,19 +8,30 @@ cg = CoinGeckoAPI()
 
 @app.route("/")
 @app.route("/index")
-def home():
+def index():
     return render_template("index.html")
 
 @app.route("/checkWallet")
 def checkWallet():
     return render_template("checkWallet.html")
 
-
 @socketio.on("form")
 def handle_form(data):
-    # response = {}
+    response = {}
+    if data['queryType']=='crypto':
+        response = {'crypto': crypto_report(data=data), 'query-type': data['queryType']}  
+    elif data['queryType']=='token':
+        response = {'token': token_report(data=data), 'query-type': data['queryType']}
+    elif data['queryType']=='full-report':
+        response = {'crypto':crypto_report(data=data), 'token':token_report(data=data), 'query-type': data['queryType']}
+
+    if len(response) != 0:
+        emit("computation", response)
+    else:
+        emit("errorCrypto")
+
+def crypto_report(data:dict):
     crypto_dict = {}
-    token_dict = {}
     for crypto in crypto_metadata.values():
         crypto_dict.update(
             {
@@ -32,8 +43,10 @@ def handle_form(data):
                 )
             }
         )
+    return crypto_dict
 
-
+def token_report(data:dict):
+    token_dict = {}
     for token in token_metadata.values():
         token_dict.update(
             {
@@ -47,14 +60,4 @@ def handle_form(data):
                 )
             }
         )
-
-    response = {'crypto':crypto_dict, 'token':token_dict}
-
-    # response = {'crypto':{'BNB':5.37, 'ETH':6.67}}
-
-    print(response)
-
-    if len(response) != 0:
-        emit("computation", response)
-    else:
-        emit("errorCrypto")
+    return token_dict
