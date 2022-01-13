@@ -1,18 +1,19 @@
-const makeChart = (walletChart, serverData) => {
+const makeChart = (walletChart, serverData, type, color) => {
   const coins = Object.keys(serverData).filter(
     (x) => serverData[x].length != 0
   );
+  backgroundColors = color.slice(0, coins.length);
   const dataArray = coins.map((x) => serverData[x].toFixed(2));
   console.log(dataArray);
   const walletResults = new Chart(walletChart, {
-    type: "bar",
+    type: type,
     data: {
       labels: coins,
       datasets: [
         {
           label: "Balance",
           data: dataArray,
-          backgroundColor: ["rgb(255,255,0, 0.5)", "rgb(88,88,88)"],
+          backgroundColor: backgroundColors,
         },
       ],
     },

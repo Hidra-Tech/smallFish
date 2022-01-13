@@ -16,7 +16,16 @@ socket.on("computation", (serverData) => {
   const cryptoChart = document
     .getElementById("crypto-balance")
     .getContext("2d");
-  makeChart(cryptoChart, cryptoData);
+  const backgroundColors = [
+    "#6b5b95",
+    "#feb236",
+    "#d64161",
+    "#ff7b25",
+    "#3e4444",
+    "#82b74b",
+    "#405d27",
+  ];
+  makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
   writeSection({
     id: "money-balance",
     section: "one",
@@ -29,7 +38,7 @@ socket.on("computation", (serverData) => {
   countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
   // set values for second section
   const tokenChart = document.getElementById("chart-token").getContext("2d");
-  makeChart(tokenChart, tokenData);
+  makeChart(tokenChart, tokenData, "doughnut", backgroundColors);
   writeSection({
     id: "token-balance",
     section: "two",

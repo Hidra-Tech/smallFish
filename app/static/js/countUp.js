@@ -52,7 +52,7 @@ const countUp = ({ amount, id, color }) => {
     if (i / amount >= 1) {
       clearInterval(int);
     }
-  }, 15);
+  }, 0.1);
 };
 
 // countUp(10);

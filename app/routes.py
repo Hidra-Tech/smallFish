@@ -46,6 +46,8 @@ def handle_form(data):
 
     response = {'crypto':crypto_dict, 'token':token_dict}
 
+    # response = {'crypto':{'BNB':5.37, 'ETH':6.67}}
+
     print(response)
 
     if len(response) != 0:
