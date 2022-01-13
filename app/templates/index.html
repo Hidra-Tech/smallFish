@@ -4,102 +4,148 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
-      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
-      crossorigin="anonymous"
-    ></script>
-    <title>Sardinha Mecânica - Check Wallet</title>
+    <title>Sardinha Mecânica</title>
     <link
       rel="stylesheet"
       type="text/css"
-      href="{{ url_for('static',filename='css/style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static',filename='css/modal.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static',filename='css/countUp.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static',filename='css/buttons.css') }}"
+      href="{{ url_for('static',filename='css/index.css') }}"
     />
   </head>
   <body>
-    <div class="main-container">
-      <div class="dropdown">
-        <!-- <label for="currency-names">Choose a currency:</label> -->
-        <select class="currency" name="currency" id="currency">
-          <option value="BRL">BRL</option>
-          <option value="USD">USD</option>
-        </select>
-      </div>
+    <div class="parent">
+      <header class="headline">
+        <h1>Sardinha Mecânica</h1>
+        <h3>Even up the game!</h3>
+      </header>
 
-      <div class="line">
-        <a href="#"
-          ><img
+      <header>
+        <div class="line">
+          <img
             class="logo-img"
             src="{{ url_for('static',filename='images/tunna.png') }}"
-        /></a>
-      </div>
-
-      <div class="app-name">
-        <h1>Check Wallet</h1>
-      </div>
-
-      <form id="form" class="form-container">
-        <input id="address" class="address" type="text" name="address" />
-        <input class="button-app" type="submit" value="Check" />
-      </form>
-
-      <div class="section one"></div>
-
-      <div class="section-one-title">
-        <div class="balance-currency"></div>
-        <div class="balance-crypto"></div>
-      </div>
-      <div class="result">
-        <div class="chart" id="money-balance" data-percent="50"></div>
-        <div class="chart-container">
-          <canvas id="crypto-balance"> </canvas>
+          />
         </div>
-      </div>
+      </header>
 
-      <div class="section two"></div>
-
-      <div class="section-two-title">
-        <div class="balance-currency"></div>
-        <div class="balance-crypto"></div>
-      </div>
-      <div class="result">
-        <div class="chart" id="token-balance" data-percent="50"></div>
-        <div class="chart-container">
-          <canvas id="chart-token"> </canvas>
-        </div>
-      </div>
+      <nav>
+        <button class="show-modal">Sobre</button>
+        <button class="show-modal">Tutorial</button>
+        <button class="show-modal">Assinatura</button>
+        <button class="show-modal">Discord</button>
+      </nav>
     </div>
-    <script
-      type="module"
-      src="{{ url_for('static', filename='js/script.js') }}"
-    ></script>
+
+    <div class="modal child-one hidden">
+      <button class="close xchild-one">&times;</button>
+
+      <h1>O que é o Sardinha Mecânica?</h1>
+      <p>
+        O <strong>Sardinha Mecânica</strong> é uma iniciativa que busca
+        profissionalizar o ambiente de trabalho de jogadores de jogos NFT, oferecendo
+        infraestrutura para sua atuação. A ideia fundamental do SM é 
+        democratizar as condições de trabalho no ecossistema de jogos NFT. 
+        Atualmente, grandes investidores têm acesso a sofistificados 
+        softwares, como <i>bots</i> que automatizam compra e venda
+         de moedas e mesmo automação de atividades nos jogos. Por outro 
+         lado, muitos jogadores, com menor poder de mercado, fazem todas suas 
+         operações sem auxílio de ferramentas ou usando ferramentas rudimentares, 
+         como planilhas preenchidas manualmente. Nossa proposta é oferecer
+        infraestrutura de software que permita o jogador se concentrar 
+        em sua atividade, ao mesmo tempo que tem controle sobre seus investimentos.
+      </p>
+
+      <p>
+        O modelo de negócios do SM é baseado em um serviço de assinatura que dá
+        acesso a um conjunto de web apps. Para ver os apps disponíveis, clique
+        no link <i>Tutorial</i>, na página inicial. Se algum app te interessar,
+        clique em <i>Assinatura</i> e assine nosso serviço. A assinatura dá acesso a
+        todos os apps do SM, inclusive os que ainda serão lançados. Uma lista de
+        Apps em desenvolvimento encontram-se na seção <i>Roadmap</i>. 
+      </p>
+
+      <p>
+        Nossa filosofia é baseada no foco ao cliente e, por essa razão, mantemos canais de
+        comunicação e suporte permanentes. Clique no link <i>Discord</i> para ter
+        acesso ao nosso <i>server</i>. Lá você pode enviar sugestões, relatar problemas
+        ou dificuldades no uso dos apps e fazer elogios.
+      </p>
+    </div>
+
+    <!-- TUTORIAL -->
+    <div class="modal child-two hidden">
+      <button class="close xchild-two">&times;</button>
+
+      <h1 class="app-name">Check Wallet</h1>
+
+      <p>
+          O <strong>Check Wallet</strong> é uma ferramenta que permite o usuário checar o saldo
+          em reais de qualquer Metamask. A checagem do saldo está disponível em três modalidades: 
+          <i>crypto</i>, <i>game tokens</i> e <i>full report</i>. A modalidade 
+          <i>crypto</i> permite acessar o saldo da metamask nas principais criptomoedas, 
+          BNB, Bitcoin e Ethereum. Para acessar os resultados, o usuário precisa apenas fornecer 
+          o endereço público da Metamask. 
+      </p>
+
+      <p>
+          Na modalidade <i>game tokens</i>, além do endereço público da metamask, é necessário informar 
+          quais jogos o usuário gostaria de verificar o saldo de tokens. É importante notar que 
+          o retorno do CW nesse caso refere-se ao saldo das tokens na Metamask e, assim, excluí o saldo
+          de tokens investidas no jogo. Em breve, será possível estimar o investimento total do usuário 
+          nos jogos com a <strong>Track Wallet</strong>, ferramenta a ser lançada pelo SM, conforme <i>Roadmap</i>.
+    </p>
+
+    <p>
+        Por fim, ao selecionar a opção <i>full report</i>, o usuário terá acesso ao saldo de crypto e game tokens na 
+        Metamask em questão. Ainda na dúvida de como o <strong>Check Wallet</strong> funciona? Assista o vídeo abaixo, 
+        onde mostramos na prática como a ferramenta funciona.
+    </p>
+
+      <a class="app-option" href="#">Go to App</a>
+
+    </div>
+    </div>
+
+    <div class="modal child-three hidden">
+      <button class="close xchild-three">&times;</button>
+
+      <h1>What is Lorem Ipsum?</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac
+        pulvinar eros. Duis vel quam interdum, egestas tortor nec, tincidunt
+        dui. Morbi condimentum blandit metus et semper. Quisque scelerisque eros
+        ac velit fermentum sagittis. Pellentesque convallis faucibus diam, sit
+        amet blandit nisl vehicula nec. Maecenas pharetra viverra tellus in
+        sagittis. Phasellus pharetra ex dolor, eget sagittis diam cursus eu.
+        Vivamus tristique eros sapien, vel finibus velit tempus a. Pellentesque
+        nisl est, interdum vitae faucibus non, elementum sit amet metus. Vivamus
+        vel scelerisque metus. Praesent ultrices metus at leo volutpat ultrices.
+        Quisque et interdum neque.
+      </p>
+
+
+    <div class="modal child-four hidden">
+      <button class="close xchild-four">&times;</button>
+
+
+      <h1>Where does it come from?</h1>
+      <p>
+        Nunc laoreet condimentum nisi, ac venenatis tortor aliquam hendrerit.
+        Curabitur eu lacus non ligula dapibus aliquet vel vitae ligula. Fusce
+        mattis sit amet dolor nec feugiat. Fusce elementum tempor diam, ut
+        eleifend velit maximus eu. Maecenas sodales magna nec aliquet elementum.
+        Fusce nisl ante, commodo in magna ac, sollicitudin mollis risus. Integer
+        tellus massa, mollis sed nulla non, blandit lobortis tellus. Maecenas
+        egestas mi a condimentum bibendum. Duis nisl turpis, maximus vel auctor
+        nec, semper eu diam. Class aptent taciti sociosqu ad litora torquent per
+        conubia nostra, per inceptos himenaeos. Integer eu dictum diam.
+      </p>
+    </div>
+
+    <div class="overlay hidden"></div>
+
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/countUp.js') }}"
-    ></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/makeChart.js') }}"
-    ></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/usefulFunctions.js') }}"
+      src="{{ url_for('static', filename='js/index.js') }}"
     ></script>
   </body>
 </html>

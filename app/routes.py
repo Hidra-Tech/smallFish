@@ -8,8 +8,12 @@ cg = CoinGeckoAPI()
 
 @app.route("/")
 @app.route("/index")
-def checkWallet():
+def home():
     return render_template("index.html")
+
+@app.route("/checkWallet")
+def checkWallet():
+    return render_template("checkWallet.html")
 
 
 @socketio.on("form")
