@@ -21,24 +21,34 @@ socket.on("computation", (serverData) => {
     "#405d27",
   ];
 
-  const reportSection = (coinKind) => {
+  const firstSection = (coinKind, chartType, sectionTitle) => {
     let coinData = serverData[coinKind];
-    const cryptoChart = document
+    const coinChart = document
       .getElementById("crypto-balance")
       .getContext("2d");
     // remove "queryType" property
-    cryptoData = removePropFromObject(cryptoData, "queryType");
-    makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
+    coinData = removePropFromObject(coinData, "queryType");
+    // shuffle colors: each query a new color scheme
+    shuffleArray(backgroundColors);
+    makeChart(coinChart, coinData, chartType, backgroundColors);
     writeSection({
       id: "money-balance",
       section: "one",
-      sectionTitle: "crypto balance",
+      sectionTitle: sectionTitle,
       leftId: "balance-currency",
       rightId: "balance-crypto",
-      coinKind: currencyField.value,
+      currency: currencyField.value,
+      coinKind: coinKind,
     });
-    const amount_crypto = sumNumberValues(cryptoData);
-    countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
+    const amount_crypto = sumNumberValues(coinData);
+    // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
+    const selectedColor =
+      backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+    countUp({
+      amount: amount_crypto,
+      id: "money-balance",
+      color: selectedColor,
+    });
   };
 
   // const cryptoSection = () => {
@@ -81,9 +91,9 @@ socket.on("computation", (serverData) => {
   //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
   // };
   if (queryType === "crypto") {
-    cryptoSection();
+    firstSection("crypto", "bar", "crypto balance");
   } else if (queryType === "token") {
-    tokenSection();
+    firstSection("token", "doughnut", "token balance");
   } else if (queryType === "full-report") {
     cryptoSection();
     tokenSection();
