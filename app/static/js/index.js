@@ -1,5 +1,7 @@
 "use strict";
 
+// ELEMENTS
+// modal
 const modal = document.querySelector(".modal");
 const childOne = document.querySelector(".child-one");
 const childTwo = document.querySelector(".child-two");
@@ -11,7 +13,14 @@ const btnCloseChildTwo = document.querySelector(".xchild-two");
 const btnCloseChildThree = document.querySelector(".xchild-three");
 const btnCloseChildFour = document.querySelector(".xchild-four");
 const btnsOpenModal = document.querySelectorAll(".show-modal");
+// other buttons
+const cloneButtonDiscord = document.querySelector(".discord-clone");
+// links
+const socialNetworks = {
+  discord: "https://discord.gg/tDkN7HFyRf",
+};
 
+// FUNCTIONS
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
@@ -73,4 +82,14 @@ document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
     closeModal();
   }
+});
+
+cloneButtonDiscord.addEventListener("click", function () {
+  const link = socialNetworks.discord;
+
+  navigator.clipboard.writeText(link);
+  this.src = "static/images/check_all.svg";
+  setTimeout(() => {
+    this.src = "static/images/clone_regular.svg";
+  }, 500);
 });
