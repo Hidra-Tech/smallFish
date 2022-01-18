@@ -2,13 +2,15 @@
 
 import "./countUp.js";
 import "./makeChart.js";
+import "./searchBox.js";
 import "./usefulFunctions.js";
 
+// ELEMENTS
 const socket = io();
-
 const mainContainer = document.querySelector(".main-container");
 let queryType;
 
+// EVENTS
 socket.on("computation", (serverData) => {
   const currencyField = document.querySelector(".currency");
   const backgroundColors = [
@@ -134,14 +136,76 @@ socket.on("errorCrypto", () => {
 });
 
 document.getElementById("form").onsubmit = (ev) => {
-  ev.preventDefault();
-  const currencyField = document.querySelector(".currency");
-  const addressField = document.getElementById("address");
   queryType = document.querySelector("input[name=query-type]:checked").value;
-  const clientData = {
-    address: addressField.value,
-    currency: currencyField.value,
-    queryType: queryType,
-  };
-  socket.emit("form", clientData);
+  console.log(queryType);
+  ev.preventDefault();
+  if (queryType === "token" || queryType === "full-report") {
+    const searchBoxModal = document.createElement("div");
+    searchBoxModal.classList.add("modal-search-box");
+    searchBoxModal.innerHTML = `
+  <div>   <h1> Select Tokens </h1>  </div>
+  <div class="box-select-token">
+    <div class="autocomplete">
+      <div class="search-title"><h2>Search</h2></div>
+      <input class="token-option" type="text" />
+    </div>
+    <div class="box-buttons">
+      <button class="button-app add">Add</button>
+      <button class="button-app remove">Remove</button>
+    </div>
+    <div class="selected-token">
+      <ol class="selected-tokens-list"></ol>
+    </div>
+  </div>
+  `;
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const close = document.createElement("button");
+    close.classList.add("close");
+    close.innerHTML = "&times;";
+    const finishButton = document.createElement("button");
+    finishButton.classList.add("button-app");
+
+    mainContainer.append(searchBoxModal);
+    searchBoxModal.append(close);
+    searchBoxModal.append(finishButton);
+    mainContainer.append(overlay);
+    const closeModal = () => {
+      searchBoxModal.remove();
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", closeModal);
+
+    document.querySelector(".close").addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+    searchBox();
+    finishButton.addEventListener("click", () => {
+      const currencyField = document.querySelector(".currency");
+      const addressField = document.getElementById("address");
+      const clientData = {
+        address: addressField.value,
+        currency: currencyField.value,
+        queryType: queryType,
+        gameTokensSelected: [...document.querySelectorAll(".tokens")],
+      };
+      socket.emit("form", clientData);
+    });
+  } else {
+    const currencyField = document.querySelector(".currency");
+    const addressField = document.getElementById("address");
+    queryType = document.querySelector("input[name=query-type]:checked").value;
+    const clientData = {
+      address: addressField.value,
+      currency: currencyField.value,
+      queryType: queryType,
+    };
+    socket.emit("form", clientData);
+  }
 };
