@@ -66,7 +66,7 @@ socket.on("computation", (serverData) => {
     "#405d27",
   ];
 
-  const buildFirstSection = (coinKind, chartType, sectionTitle) => {
+  const buildFirstSection = (coinKind, chartType, chartTitle) => {
     let coinData = serverData[coinKind];
     const coinChart = document
       .getElementById("crypto-balance")
@@ -75,7 +75,7 @@ socket.on("computation", (serverData) => {
     coinData = removePropFromObject(coinData, "queryType");
     // shuffle colors: each query a new color scheme
     shuffleArray(backgroundColors);
-    makeChart(coinChart, coinData, chartType, backgroundColors);
+    makeChart(coinChart, coinData, chartType, backgroundColors, chartTitle);
     const amount_crypto = sumNumberValues(coinData);
     // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
     const selectedColor =
@@ -128,9 +128,9 @@ socket.on("computation", (serverData) => {
   //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
   // };
   if (queryType === "crypto") {
-    buildFirstSection("crypto", "bar", "crypto balance");
+    buildFirstSection("crypto", "bar", "Wallet Balance by Crypto");
   } else if (queryType === "token") {
-    buildFirstSection("token", "doughnut", "token balance");
+    buildFirstSection("token", "doughnut", "Wallet balance by Game Token");
   } else if (queryType === "full-report") {
     // cryptoSection();
     // tokenSection();
