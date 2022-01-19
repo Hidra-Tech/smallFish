@@ -14,8 +14,11 @@
 
 span {
   color: #555;
-  display: block;
-  line-height: 330px;
+  display: flex;
+  margin-top: 110px;
+  flex-direction: column;
+  gap: 10px;
+  /* line-height: 330px; */
   text-align: center;
   width: 330px;
   font-family: monospace;

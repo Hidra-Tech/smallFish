@@ -51,13 +51,7 @@ h1 {
   display: flex;
   justify-content: space-around;
   gap: 5px;
-}
-
-.balance-currency {
-  display: block;
-  text-align: center;
-  width: 900px;
-  margin-left: 100px;
+  margin-bottom: 100px;
 }
 
 .balance-crypto {
@@ -110,8 +104,8 @@ h1 {
 
 .result {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 100px;
+  flex-direction: column;
+  gap: 500px;
 }
 
 .chart {
@@ -122,10 +116,6 @@ h1 {
   height: 45vh;
   width: 30vw;
   margin-left: 100px;
-}
-
-#money-balance {
-  opacity: 0;
 }
 
 #token-balance {

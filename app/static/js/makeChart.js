@@ -34,24 +34,3 @@ const makeChart = (walletChart, serverData, type, color) => {
     },
   });
 };
-
-const writeSection = ({
-  id,
-  section,
-  sectionTitle,
-  leftId,
-  rightId,
-  currency,
-  coinKind,
-}) => {
-  document.getElementById(id).style.opacity = 1;
-  document.querySelector(
-    `.${section}`
-  ).innerHTML = `<h2>${sectionTitle.toUpperCase()}</h2>`;
-  document.querySelector(
-    `.${leftId}`
-  ).innerHTML = `<h2>Balance ${currency.toUpperCase()}</h2>`;
-  document.querySelector(
-    `.${rightId}`
-  ).innerHTML = `<h2>Balance by ${coinKind}</h2>`;
-};

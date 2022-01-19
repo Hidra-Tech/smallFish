@@ -1,4 +1,4 @@
-const countUp = ({ amount, id, color }) => {
+const countUp = ({ amount, id, color, currency }) => {
   let el = document.getElementById(id); // get canvas
 
   let options = {
@@ -48,7 +48,7 @@ const countUp = ({ amount, id, color }) => {
     const dollar = i;
     // const cents = String(i % 100).padStart(2, 0);
 
-    span.textContent = `\$${dollar}`;
+    span.innerHTML = `<div>\$${dollar} </div> <div style='font-size:24px'> ${currency} </div>`;
     if (i / amount >= 1) {
       clearInterval(int);
     }

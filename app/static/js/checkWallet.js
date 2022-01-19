@@ -12,6 +12,49 @@ let queryType;
 
 // EVENTS
 socket.on("computation", (serverData) => {
+  // first section div
+  const firstSection = document.createElement("div");
+  firstSection.classList.add("section");
+  firstSection.classList.add("one");
+  firstSection.classList.add("modal-result");
+  firstSection.textContent = "Hi!";
+
+  firstSection.innerHTML = `
+  <div class="section-one-title">
+  <h1> Crypto Report </h1>
+  </div>
+  <div class="result">
+    <div class="chart" id="money-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="crypto-balance"> </canvas>
+    </div>
+  </div>
+  `;
+
+  const overlay = document.createElement("div");
+  overlay.classList.add("overlay");
+  const close = document.createElement("button");
+  close.classList.add("close");
+  close.innerHTML = "&times;";
+  mainContainer.append(firstSection);
+  firstSection.append(close);
+  mainContainer.append(overlay);
+  const closeModal = () => {
+    firstSection.remove();
+    overlay.remove();
+  };
+
+  overlay.addEventListener("click", closeModal);
+
+  const closeButton = document.querySelector(".close");
+  closeButton.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  });
+
   const currencyField = document.querySelector(".currency");
   const backgroundColors = [
     "#feb236",
@@ -33,15 +76,6 @@ socket.on("computation", (serverData) => {
     // shuffle colors: each query a new color scheme
     shuffleArray(backgroundColors);
     makeChart(coinChart, coinData, chartType, backgroundColors);
-    writeSection({
-      id: "money-balance",
-      section: "one",
-      sectionTitle: sectionTitle,
-      leftId: "balance-currency",
-      rightId: "balance-crypto",
-      currency: currencyField.value,
-      coinKind: coinKind,
-    });
     const amount_crypto = sumNumberValues(coinData);
     // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
     const selectedColor =
@@ -50,6 +84,7 @@ socket.on("computation", (serverData) => {
       amount: amount_crypto,
       id: "money-balance",
       color: selectedColor,
+      currency: currencyField.value,
     });
   };
 
