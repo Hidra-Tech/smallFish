@@ -104,3 +104,9 @@ u {
   color: red;
   /* padding-left: 25px; */
 }
+
+.finish-search {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+}

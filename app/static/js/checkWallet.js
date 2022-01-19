@@ -23,7 +23,7 @@ socket.on("computation", (serverData) => {
     "#405d27",
   ];
 
-  const firstSection = (coinKind, chartType, sectionTitle) => {
+  const buildFirstSection = (coinKind, chartType, sectionTitle) => {
     let coinData = serverData[coinKind];
     const coinChart = document
       .getElementById("crypto-balance")
@@ -93,12 +93,12 @@ socket.on("computation", (serverData) => {
   //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
   // };
   if (queryType === "crypto") {
-    firstSection("crypto", "bar", "crypto balance");
+    buildFirstSection("crypto", "bar", "crypto balance");
   } else if (queryType === "token") {
-    firstSection("token", "doughnut", "token balance");
+    buildFirstSection("token", "doughnut", "token balance");
   } else if (queryType === "full-report") {
-    cryptoSection();
-    tokenSection();
+    // cryptoSection();
+    // tokenSection();
   }
 });
 
@@ -157,6 +157,9 @@ document.getElementById("form").onsubmit = (ev) => {
       <ol class="selected-tokens-list"></ol>
     </div>
   </div>
+  <div class="finish-search">
+  <button class="button-app finish-button">Finish</button>
+  </div>
   `;
 
     const overlay = document.createElement("div");
@@ -164,12 +167,8 @@ document.getElementById("form").onsubmit = (ev) => {
     const close = document.createElement("button");
     close.classList.add("close");
     close.innerHTML = "&times;";
-    const finishButton = document.createElement("button");
-    finishButton.classList.add("button-app");
-
     mainContainer.append(searchBoxModal);
     searchBoxModal.append(close);
-    searchBoxModal.append(finishButton);
     mainContainer.append(overlay);
     const closeModal = () => {
       searchBoxModal.remove();
@@ -178,7 +177,9 @@ document.getElementById("form").onsubmit = (ev) => {
 
     overlay.addEventListener("click", closeModal);
 
-    document.querySelector(".close").addEventListener("click", closeModal);
+    const finishButton = document.querySelector(".finish-button");
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", closeModal);
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
@@ -187,6 +188,7 @@ document.getElementById("form").onsubmit = (ev) => {
     });
     searchBox();
     finishButton.addEventListener("click", () => {
+      closeModal();
       const currencyField = document.querySelector(".currency");
       const addressField = document.getElementById("address");
       const clientData = {
