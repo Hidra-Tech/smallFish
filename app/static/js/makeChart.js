@@ -4,39 +4,52 @@ const makeChart = (walletChart, serverData, type, color, chartTitle) => {
   );
   backgroundColors = color.slice(0, coins.length);
   const dataArray = coins.map((x) => serverData[x].toFixed(2));
+  const datalabels = {
+    anchor: "end",
+    align: "top",
+    offset: 10,
+    font: {
+      size: 20,
+    },
+  };
+  const datasets = [];
+  const ncoins = dataArray.length;
+
+  for (let i = 0; i < ncoins; i++) {
+    datasets.push({
+      label: coins[i],
+      backgroundColor: backgroundColors[i],
+      data: Array(dataArray[i]),
+      datalabels: datalabels,
+    });
+  }
   // create a chart object for each type
   if (type === "bar") {
     const walletResults = new Chart(walletChart, {
       type: "bar",
       data: {
         labels: [""],
-        datasets: [
-          {
-            label: coins[0],
-            backgroundColor: backgroundColors[0],
-            data: Array(dataArray[0]),
-          },
-          {
-            label: coins[1],
-            backgroundColor: backgroundColors[1],
-            data: Array(dataArray[1]),
-          },
-        ],
+        datasets: datasets,
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          display: true,
-          position: "right",
-        },
-        title: {
-          display: true,
-          text: chartTitle,
-          fontSize: 24,
-          position: "bottom",
+        plugins: {
+          title: {
+            display: true,
+            text: chartTitle,
+            font: {
+              size: 24,
+            },
+            position: "top",
+          },
+          legend: {
+            display: true,
+            position: "right",
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   } else if (type === "doughnut") {
     const walletResults = new Chart(walletChart, {
@@ -48,22 +61,37 @@ const makeChart = (walletChart, serverData, type, color, chartTitle) => {
             label: "crypto" + type,
             data: dataArray,
             backgroundColor: backgroundColors,
+            datalabels: {
+              anchor: "center",
+              // align: "top",
+              // offset: 10,
+              color: "white",
+              font: {
+                size: 20,
+              },
+            },
           },
         ],
       },
       options: {
         // responsive: true,
         // maintainAspectRatio: false,
-        legend: {
-          display: true,
-          position: "right",
-        },
-        title: {
-          display: true,
-          text: chartTitle,
-          fontSize: 24,
+        plugins: {
+          legend: {
+            display: true,
+            position: "bottom",
+          },
+          title: {
+            display: true,
+            text: chartTitle,
+            font: {
+              size: 24,
+            },
+            position: "top",
+          },
         },
       },
+      plugins: [ChartDataLabels],
     });
   }
 };

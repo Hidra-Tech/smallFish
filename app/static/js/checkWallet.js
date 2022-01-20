@@ -8,53 +8,37 @@ import "./usefulFunctions.js";
 // ELEMENTS
 const socket = io();
 const mainContainer = document.querySelector(".main-container");
+const gameTokens = [
+  {
+    name: "CryptoCars (CCAR)",
+    id: "cryptocars",
+    contract: "0x50332bdca94673f33401776365b66cc4e81ac81d",
+  },
+  {
+    name: "CryptoPlanes (CPAN)",
+    id: "cryptoplanes",
+    contract: "0x04260673729c5f2b9894a467736f3d85f8d34fc8",
+  },
+  {
+    name: "CryptoGuards (CGAR)",
+    id: "cryptoguards",
+    contract: "0x432c7cf1de2b97a013f1130f199ed9d1363215ba",
+  },
+  {
+    name: "Zodiacs (ZDC)",
+    id: "zodiacs",
+    contract: "0x5649e392a1bac3e21672203589adf8f6c99f8db3",
+  },
+  {
+    name: "Bomber Coin (BCOIN)",
+    id: "bomber-coin",
+    contract: "0x00e1656e45f18ec6747f5a8496fd39b50b38396d",
+  },
+];
 let queryType;
 
 // EVENTS
 socket.on("computation", (serverData) => {
-  // first section div
-  const firstSection = document.createElement("div");
-  firstSection.classList.add("section");
-  firstSection.classList.add("one");
-  firstSection.classList.add("modal-result");
-  firstSection.textContent = "Hi!";
-
-  firstSection.innerHTML = `
-  <div class="section-one-title">
-  <h1> Crypto Report </h1>
-  </div>
-  <div class="result">
-    <div class="chart" id="money-balance" data-percent="50"></div>
-    <div class="chart-container">
-      <canvas id="crypto-balance"> </canvas>
-    </div>
-  </div>
-  `;
-
-  const overlay = document.createElement("div");
-  overlay.classList.add("overlay");
-  const close = document.createElement("button");
-  close.classList.add("close");
-  close.innerHTML = "&times;";
-  mainContainer.append(firstSection);
-  firstSection.append(close);
-  mainContainer.append(overlay);
-  const closeModal = () => {
-    firstSection.remove();
-    overlay.remove();
-  };
-
-  overlay.addEventListener("click", closeModal);
-
-  const closeButton = document.querySelector(".close");
-  closeButton.addEventListener("click", closeModal);
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      closeModal();
-    }
-  });
-
   const currencyField = document.querySelector(".currency");
   const backgroundColors = [
     "#feb236",
@@ -66,7 +50,53 @@ socket.on("computation", (serverData) => {
     "#405d27",
   ];
 
-  const buildFirstSection = (coinKind, chartType, chartTitle) => {
+  const buildSingleSection = (
+    coinKind,
+    chartType,
+    chartTitle,
+    sectionTitle
+  ) => {
+    const singleSection = document.createElement("div");
+    singleSection.classList.add("section");
+    singleSection.classList.add("one");
+    singleSection.classList.add("modal-result");
+    singleSection.textContent = "Hi!";
+
+    singleSection.innerHTML = `
+  <div class="section-one-title">
+  <h1> ${sectionTitle} </h1>
+  </div>
+  <div class="result">
+    <div class="chart" id="money-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="crypto-balance"> </canvas>
+    </div>
+  </div>
+  `;
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const close = document.createElement("button");
+    close.classList.add("close");
+    close.innerHTML = "&times;";
+    mainContainer.append(singleSection);
+    singleSection.append(close);
+    mainContainer.append(overlay);
+    const closeModal = () => {
+      singleSection.remove();
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", closeModal);
+
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
     let coinData = serverData[coinKind];
     const coinChart = document
       .getElementById("crypto-balance")
@@ -88,52 +118,103 @@ socket.on("computation", (serverData) => {
     });
   };
 
-  // const cryptoSection = () => {
-  //   // set values for first section
-  //   let cryptoData = serverData["crypto"];
-  //   const cryptoChart = document
-  //     .getElementById("crypto-balance")
-  //     .getContext("2d");
-  //   // remove "queryType" property
-  //   cryptoData = removePropFromObject(cryptoData, "queryType");
-  //   makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
-  //   writeSection({
-  //     id: "money-balance",
-  //     section: "one",
-  //     sectionTitle: "crypto balance",
-  //     leftId: "balance-currency",
-  //     rightId: "balance-crypto",
-  //     coinKind: currencyField.value,
-  //   });
-  //   const amount_crypto = sumNumberValues(cryptoData);
-  //   countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
-  // };
+  const buildDoubleSection = (
+    coinKind,
+    chartType,
+    chartTitle,
+    sectionTitle
+  ) => {
+    const singleSection = document.createElement("div");
+    singleSection.classList.add("section");
+    singleSection.classList.add("one");
+    singleSection.classList.add("modal-result");
+    singleSection.textContent = "Hi!";
 
-  // const tokenSection = () => {
-  //   // set values for second section
-  //   let tokenData = serverData["token"];
-  //   const tokenChart = document.getElementById("chart-token").getContext("2d");
-  //   // remove "queryType" property
-  //   tokenData = removePropFromObject(tokenData, "queryType");
-  //   makeChart(tokenChart, tokenData, "doughnut", backgroundColors);
-  //   writeSection({
-  //     id: "token-balance",
-  //     section: "two",
-  //     sectionTitle: "token balance",
-  //     leftId: "balance-currency",
-  //     rightId: "balance-crypto",
-  //     coinKind: currencyField.value,
-  //   });
-  //   const amount_token = sumNumberValues(tokenData);
-  //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
-  // };
+    singleSection.innerHTML = `
+  <div class="section-one-title">
+  <h1> ${sectionTitle} </h1>
+  </div>
+  <div class="result">
+    <div class="chart" id="money-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="crypto-balance"> </canvas>
+    </div>
+  </div>
+
+  <div class="section two"></div>
+
+  <div class="section-two-title">
+    <div class="balance-currency"></div>
+    <div class="balance-crypto"></div>
+  </div>
+  <div class="result">
+    <div class="chart" id="token-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="chart-token"> </canvas>
+    </div>
+  </div>
+  `;
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const close = document.createElement("button");
+    close.classList.add("close");
+    close.innerHTML = "&times;";
+    mainContainer.append(singleSection);
+    singleSection.append(close);
+    mainContainer.append(overlay);
+    const closeModal = () => {
+      singleSection.remove();
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", closeModal);
+
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+    let coinData = serverData[coinKind];
+    const coinChart = document
+      .getElementById("crypto-balance")
+      .getContext("2d");
+    // remove "queryType" property
+    coinData = removePropFromObject(coinData, "queryType");
+    // shuffle colors: each query a new color scheme
+    shuffleArray(backgroundColors);
+    makeChart(coinChart, coinData, chartType, backgroundColors, chartTitle);
+    const amount_crypto = sumNumberValues(coinData);
+    // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
+    const selectedColor =
+      backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+    countUp({
+      amount: amount_crypto,
+      id: "money-balance",
+      color: selectedColor,
+      currency: currencyField.value,
+    });
+  };
+
   if (queryType === "crypto") {
-    buildFirstSection("crypto", "bar", "Wallet Balance by Crypto");
+    buildSingleSection(
+      "crypto",
+      "bar",
+      "Wallet Balance by Crypto",
+      "Crypto Report"
+    );
   } else if (queryType === "token") {
-    buildFirstSection("token", "doughnut", "Wallet balance by Game Token");
+    buildSingleSection(
+      "token",
+      "doughnut",
+      "Wallet balance by Game Token",
+      "Game Token Report"
+    );
   } else if (queryType === "full-report") {
-    // cryptoSection();
-    // tokenSection();
+    buildDoubleSection();
   }
 });
 
@@ -172,7 +253,6 @@ socket.on("errorCrypto", () => {
 
 document.getElementById("form").onsubmit = (ev) => {
   queryType = document.querySelector("input[name=query-type]:checked").value;
-  console.log(queryType);
   ev.preventDefault();
   if (queryType === "token" || queryType === "full-report") {
     const searchBoxModal = document.createElement("div");
@@ -221,17 +301,33 @@ document.getElementById("form").onsubmit = (ev) => {
         closeModal();
       }
     });
-    searchBox();
+    searchBox(gameTokens);
     finishButton.addEventListener("click", () => {
-      closeModal();
       const currencyField = document.querySelector(".currency");
       const addressField = document.getElementById("address");
+      let itemsTokens = document
+        .querySelector(".selected-tokens-list")
+        .getElementsByTagName("li");
+      const selectedTokensName = [];
+
+      // using for loop because itemsTokens is an object
+      for (const element of itemsTokens) {
+        selectedTokensName.push(element.innerText);
+      }
+
+      const gameTokensFiltered = gameTokens.filter((x) =>
+        selectedTokensName.includes(x.name)
+      );
+      const selectedTokens = gameTokensFiltered.map((x) => x.id);
+
       const clientData = {
         address: addressField.value,
         currency: currencyField.value,
         queryType: queryType,
-        gameTokensSelected: [...document.querySelectorAll(".tokens")],
+        gameTokensSelected: selectedTokens,
       };
+      console.log(clientData.gameTokensSelected);
+      closeModal();
       socket.emit("form", clientData);
     });
   } else {
