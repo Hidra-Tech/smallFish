@@ -109,38 +109,11 @@ const autocomplete = function (inp, arr) {
   });
 };
 
-const searchBox = () => {
+const searchBox = (gameTokens) => {
   const addButton = document.querySelector(".add");
   const removeButton = document.querySelector(".remove");
   let clickCount = new Array(50).fill(0);
   let addCount = -1;
-  const gameTokens = [
-    {
-      name: "CryptoCars (CCAR)",
-      id: "cryptocars",
-      contract: "0x50332bdca94673f33401776365b66cc4e81ac81d",
-    },
-    {
-      name: "CryptoPlanes (CPAN)",
-      id: "cryptoplanes",
-      contract: "0x04260673729c5f2b9894a467736f3d85f8d34fc8",
-    },
-    {
-      name: "CryptoGuards (CGAR)",
-      id: "cryptoguards",
-      contract: "0x432c7cf1de2b97a013f1130f199ed9d1363215ba",
-    },
-    {
-      name: "Zodiacs (ZDC)",
-      id: "zodiacs",
-      contract: "0x5649e392a1bac3e21672203589adf8f6c99f8db3",
-    },
-    {
-      name: "Bomber Coin (BCOIN)",
-      id: "bomber-coin",
-      contract: "0x00e1656e45f18ec6747f5a8496fd39b50b38396d",
-    },
-  ];
   const nameTokens = gameTokens.map((x) => x.name);
   const colorSelected = function () {
     const tokenItems = document.querySelectorAll("li");
@@ -182,8 +155,6 @@ const searchBox = () => {
         activeTokens.push(tokenItems[i].active);
       }
     }
-    console.log(tokenItems);
-    console.log(activeTokens);
 
     if (tokenItems === undefined || activeTokens.every((x) => x === false)) {
       const boxButtons = document.querySelector(".box-buttons");

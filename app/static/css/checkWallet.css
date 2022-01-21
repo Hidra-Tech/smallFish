@@ -51,13 +51,7 @@ h1 {
   display: flex;
   justify-content: space-around;
   gap: 5px;
-}
-
-.balance-currency {
-  display: block;
-  text-align: center;
-  width: 900px;
-  margin-left: 100px;
+  margin-bottom: 100px;
 }
 
 .balance-crypto {
@@ -110,22 +104,18 @@ h1 {
 
 .result {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 100px;
-}
-
-.chart {
-  margin-left: 150px;
+  flex-direction: column;
+  gap: 400px;
 }
 
 .chart-container {
-  height: 45vh;
-  width: 30vw;
-  margin-left: 100px;
+  height: 60vh;
+  width: 45vw;
+  margin-left: 50px;
 }
 
-#money-balance {
-  opacity: 0;
+.chart {
+  margin-left: 300px;
 }
 
 #token-balance {
@@ -172,11 +162,18 @@ h1 {
   background-color: white;
 }
 
+.error-no-wallet {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  color: red;
+}
+
 .radio {
   text-align: center;
   width: 20%;
   margin: auto;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }

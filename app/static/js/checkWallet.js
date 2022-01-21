@@ -8,6 +8,35 @@ import "./usefulFunctions.js";
 // ELEMENTS
 const socket = io();
 const mainContainer = document.querySelector(".main-container");
+const addressField = document.getElementById("address");
+const radioButtons = document.querySelector(".radio");
+const gameTokens = [
+  {
+    name: "CryptoCars (CCAR)",
+    id: "cryptocars",
+    contract: "0x50332bdca94673f33401776365b66cc4e81ac81d",
+  },
+  {
+    name: "CryptoPlanes (CPAN)",
+    id: "cryptoplanes",
+    contract: "0x04260673729c5f2b9894a467736f3d85f8d34fc8",
+  },
+  {
+    name: "CryptoGuards (CGAR)",
+    id: "cryptoguards",
+    contract: "0x432c7cf1de2b97a013f1130f199ed9d1363215ba",
+  },
+  {
+    name: "Zodiacs (ZDC)",
+    id: "zodiacs",
+    contract: "0x5649e392a1bac3e21672203589adf8f6c99f8db3",
+  },
+  {
+    name: "Bomber Coin (BCOIN)",
+    id: "bomber-coin",
+    contract: "0x00e1656e45f18ec6747f5a8496fd39b50b38396d",
+  },
+];
 let queryType;
 
 // EVENTS
@@ -23,7 +52,52 @@ socket.on("computation", (serverData) => {
     "#405d27",
   ];
 
-  const buildFirstSection = (coinKind, chartType, sectionTitle) => {
+  const buildSingleSection = (
+    coinKind,
+    chartType,
+    chartTitle,
+    sectionTitle
+  ) => {
+    const singleSection = document.createElement("div");
+    singleSection.classList.add("section");
+    singleSection.classList.add("one");
+    singleSection.classList.add("modal-result");
+
+    singleSection.innerHTML = `
+  <div class="section-one-title">
+  <h1> ${sectionTitle} </h1>
+  </div>
+  <div class="result">
+    <div class="chart" id="money-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="crypto-balance"> </canvas>
+    </div>
+  </div>
+  `;
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const close = document.createElement("button");
+    close.classList.add("close");
+    close.innerHTML = "&times;";
+    mainContainer.append(singleSection);
+    singleSection.append(close);
+    mainContainer.append(overlay);
+    const closeModal = () => {
+      singleSection.remove();
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", closeModal);
+
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
     let coinData = serverData[coinKind];
     const coinChart = document
       .getElementById("crypto-balance")
@@ -32,16 +106,7 @@ socket.on("computation", (serverData) => {
     coinData = removePropFromObject(coinData, "queryType");
     // shuffle colors: each query a new color scheme
     shuffleArray(backgroundColors);
-    makeChart(coinChart, coinData, chartType, backgroundColors);
-    writeSection({
-      id: "money-balance",
-      section: "one",
-      sectionTitle: sectionTitle,
-      leftId: "balance-currency",
-      rightId: "balance-crypto",
-      currency: currencyField.value,
-      coinKind: coinKind,
-    });
+    makeChart(coinChart, coinData, chartType, backgroundColors, chartTitle);
     const amount_crypto = sumNumberValues(coinData);
     // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
     const selectedColor =
@@ -50,55 +115,131 @@ socket.on("computation", (serverData) => {
       amount: amount_crypto,
       id: "money-balance",
       color: selectedColor,
+      currency: currencyField.value,
     });
   };
 
-  // const cryptoSection = () => {
-  //   // set values for first section
-  //   let cryptoData = serverData["crypto"];
-  //   const cryptoChart = document
-  //     .getElementById("crypto-balance")
-  //     .getContext("2d");
-  //   // remove "queryType" property
-  //   cryptoData = removePropFromObject(cryptoData, "queryType");
-  //   makeChart(cryptoChart, cryptoData, "bar", backgroundColors);
-  //   writeSection({
-  //     id: "money-balance",
-  //     section: "one",
-  //     sectionTitle: "crypto balance",
-  //     leftId: "balance-currency",
-  //     rightId: "balance-crypto",
-  //     coinKind: currencyField.value,
-  //   });
-  //   const amount_crypto = sumNumberValues(cryptoData);
-  //   countUp({ amount: amount_crypto, id: "money-balance", color: "#5468ff" });
-  // };
+  const buildDoubleSection = (
+    coinKinds,
+    chartTypes,
+    chartTitles,
+    sectionTitle
+  ) => {
+    const fullReport = document.createElement("div");
+    const firstSection = document.createElement("div");
+    firstSection.classList.add("section");
+    firstSection.classList.add("one");
+    // firstSection.classList.add("modal-result");
 
-  // const tokenSection = () => {
-  //   // set values for second section
-  //   let tokenData = serverData["token"];
-  //   const tokenChart = document.getElementById("chart-token").getContext("2d");
-  //   // remove "queryType" property
-  //   tokenData = removePropFromObject(tokenData, "queryType");
-  //   makeChart(tokenChart, tokenData, "doughnut", backgroundColors);
-  //   writeSection({
-  //     id: "token-balance",
-  //     section: "two",
-  //     sectionTitle: "token balance",
-  //     leftId: "balance-currency",
-  //     rightId: "balance-crypto",
-  //     coinKind: currencyField.value,
-  //   });
-  //   const amount_token = sumNumberValues(tokenData);
-  //   countUp({ amount: amount_token, id: "token-balance", color: "#93bf85" });
-  // };
+    firstSection.innerHTML = `
+  <div class="section-one-title">
+  <h1> ${sectionTitle} </h1>
+  </div>
+  <div class="result">
+    <div class="chart" id="money-balance" data-percent="50"></div>
+    <div class="chart-container">
+      <canvas id="crypto-balance"> </canvas>
+    </div>
+  </div>`;
+
+    const secondSection = document.createElement("div");
+    secondSection.classList.add("section");
+    secondSection.classList.add("two");
+    // secondSection.classList.add("modal-result");
+    secondSection.innerHTML = `
+    </div>
+    <div class="result">
+    <div class="chart-container">
+    <canvas id="chart-token"> </canvas>
+    </div>
+    </div>
+    `;
+
+    fullReport.append(firstSection);
+    fullReport.append(secondSection);
+    fullReport.classList.add("modal-result");
+
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    const close = document.createElement("button");
+    close.classList.add("close");
+    close.innerHTML = "&times;";
+    mainContainer.append(fullReport);
+    fullReport.append(close);
+    mainContainer.append(overlay);
+    const closeModal = () => {
+      fullReport.remove();
+      overlay.remove();
+    };
+
+    overlay.addEventListener("click", closeModal);
+
+    const closeButton = document.querySelector(".close");
+    closeButton.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+    const cryptoBalance = removePropFromObject(
+      serverData["crypto"],
+      "queryType"
+    );
+    const tokenBalance = removePropFromObject(serverData["token"], "queryType");
+    const allCoins = { ...cryptoBalance, ...tokenBalance };
+    const amount_crypto = sumNumberValues(allCoins);
+    console.log(amount_crypto);
+    // https://stackoverflow.com/questions/5915096/get-a-random-item-from-a-javascript-array
+    const selectedColor =
+      backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+    countUp({
+      amount: amount_crypto,
+      id: "money-balance",
+      color: selectedColor,
+      currency: currencyField.value,
+    });
+    for (let i = 0; i < 2; i++) {
+      let coinData = serverData[coinKinds[i]];
+      const coinChart = [
+        document.getElementById("crypto-balance").getContext("2d"),
+        document.getElementById("chart-token").getContext("2d"),
+      ];
+      // remove "queryType" property
+      coinData = removePropFromObject(coinData, "queryType");
+      // shuffle colors: each query a new color scheme
+      shuffleArray(backgroundColors);
+      makeChart(
+        coinChart[i],
+        coinData,
+        chartTypes[i],
+        backgroundColors,
+        chartTitles[i]
+      );
+    }
+  };
+
   if (queryType === "crypto") {
-    buildFirstSection("crypto", "bar", "crypto balance");
+    buildSingleSection(
+      "crypto",
+      "bar",
+      "Wallet Balance by Crypto",
+      "Crypto Report"
+    );
   } else if (queryType === "token") {
-    buildFirstSection("token", "doughnut", "token balance");
+    buildSingleSection(
+      "token",
+      "doughnut",
+      "Wallet balance by Game Token",
+      "Game Token Report"
+    );
   } else if (queryType === "full-report") {
-    // cryptoSection();
-    // tokenSection();
+    buildDoubleSection(
+      ["crypto", "token"],
+      ["bar", "doughnut"],
+      ["Wallet Balance by Crypto", "Wallet Balance by Game Token"],
+      "Full Report"
+    );
   }
 });
 
@@ -136,78 +277,112 @@ socket.on("errorCrypto", () => {
 });
 
 document.getElementById("form").onsubmit = (ev) => {
-  queryType = document.querySelector("input[name=query-type]:checked").value;
-  console.log(queryType);
   ev.preventDefault();
-  if (queryType === "token" || queryType === "full-report") {
-    const searchBoxModal = document.createElement("div");
-    searchBoxModal.classList.add("modal-search-box");
-    searchBoxModal.innerHTML = `
-  <div>   <h1> Select Tokens </h1>  </div>
-  <div class="box-select-token">
-    <div class="autocomplete">
-      <div class="search-title"><h2>Search</h2></div>
-      <input class="token-option" type="text" />
+  const addressWallet = addressField.value;
+  let isWallet = Web3.utils.isAddress(addressWallet);
+
+  if (!isWallet) {
+    const errorMessage = document.createElement("div");
+    errorMessage.classList.add("error-no-wallet");
+    errorMessage.innerHTML =
+      "This doesn't look a wallet address. Please, check the valued entered.";
+    radioButtons.after(errorMessage);
+    document.body.addEventListener(
+      "click",
+      () => {
+        errorMessage.remove();
+      },
+      true
+    );
+  } else {
+    queryType = document.querySelector("input[name=query-type]:checked").value;
+    if (queryType === "token" || queryType === "full-report") {
+      const searchBoxModal = document.createElement("div");
+      searchBoxModal.classList.add("modal-search-box");
+      searchBoxModal.innerHTML = `
+    <div>   <h1> Select Tokens </h1>  </div>
+    <div class="box-select-token">
+      <div class="autocomplete">
+        <div class="search-title"><h2>Search</h2></div>
+        <input class="token-option" type="text" />
+      </div>
+      <div class="box-buttons">
+        <button class="button-app add">Add</button>
+        <button class="button-app remove">Remove</button>
+      </div>
+      <div class="selected-token">
+        <ol class="selected-tokens-list"></ol>
+      </div>
     </div>
-    <div class="box-buttons">
-      <button class="button-app add">Add</button>
-      <button class="button-app remove">Remove</button>
+    <div class="finish-search">
+    <button class="button-app finish-button">Finish</button>
     </div>
-    <div class="selected-token">
-      <ol class="selected-tokens-list"></ol>
-    </div>
-  </div>
-  <div class="finish-search">
-  <button class="button-app finish-button">Finish</button>
-  </div>
-  `;
+    `;
 
-    const overlay = document.createElement("div");
-    overlay.classList.add("overlay");
-    const close = document.createElement("button");
-    close.classList.add("close");
-    close.innerHTML = "&times;";
-    mainContainer.append(searchBoxModal);
-    searchBoxModal.append(close);
-    mainContainer.append(overlay);
-    const closeModal = () => {
-      searchBoxModal.remove();
-      overlay.remove();
-    };
+      const overlay = document.createElement("div");
+      overlay.classList.add("overlay");
+      const close = document.createElement("button");
+      close.classList.add("close");
+      close.innerHTML = "&times;";
+      mainContainer.append(searchBoxModal);
+      searchBoxModal.append(close);
+      mainContainer.append(overlay);
+      const closeModal = () => {
+        searchBoxModal.remove();
+        overlay.remove();
+      };
 
-    overlay.addEventListener("click", closeModal);
+      overlay.addEventListener("click", closeModal);
 
-    const finishButton = document.querySelector(".finish-button");
-    const closeButton = document.querySelector(".close");
-    closeButton.addEventListener("click", closeModal);
+      const finishButton = document.querySelector(".finish-button");
+      const closeButton = document.querySelector(".close");
+      closeButton.addEventListener("click", closeModal);
 
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      });
+      searchBox(gameTokens);
+      finishButton.addEventListener("click", () => {
+        const currencyField = document.querySelector(".currency");
+        // const addressField = document.getElementById("address");
+        let itemsTokens = document
+          .querySelector(".selected-tokens-list")
+          .getElementsByTagName("li");
+        const selectedTokensName = [];
+
+        // using for loop because itemsTokens is an object
+        for (const element of itemsTokens) {
+          selectedTokensName.push(element.innerText);
+        }
+
+        const gameTokensFiltered = gameTokens.filter((x) =>
+          selectedTokensName.includes(x.name)
+        );
+        const selectedTokens = gameTokensFiltered.map((x) => x.id);
+
+        const clientData = {
+          address: addressField.value,
+          currency: currencyField.value,
+          queryType: queryType,
+          gameTokensSelected: selectedTokens,
+        };
         closeModal();
-      }
-    });
-    searchBox();
-    finishButton.addEventListener("click", () => {
-      closeModal();
+        socket.emit("form", clientData);
+      });
+    } else {
       const currencyField = document.querySelector(".currency");
-      const addressField = document.getElementById("address");
+      // const addressField = document.getElementById("address");
+      queryType = document.querySelector(
+        "input[name=query-type]:checked"
+      ).value;
       const clientData = {
         address: addressField.value,
         currency: currencyField.value,
         queryType: queryType,
-        gameTokensSelected: [...document.querySelectorAll(".tokens")],
       };
       socket.emit("form", clientData);
-    });
-  } else {
-    const currencyField = document.querySelector(".currency");
-    const addressField = document.getElementById("address");
-    queryType = document.querySelector("input[name=query-type]:checked").value;
-    const clientData = {
-      address: addressField.value,
-      currency: currencyField.value,
-      queryType: queryType,
-    };
-    socket.emit("form", clientData);
+    }
   }
 };

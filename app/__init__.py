@@ -25,7 +25,6 @@ crypto_metadata = {
 
 # tokens data
 abis = glob("abi/*")
-print(abis)
 
 dict_abis = {}
 for abi in abis:
@@ -33,67 +32,65 @@ for abi in abis:
         keyname = abi.replace("abi_", "").replace(".json", "").split("/")[1]
         dict_abis.update({f"{keyname}": json.load(json_file)})
 
-print(dict_abis.keys())
-
 token_metadata = {
-    "ccar": {
-        "name": "ccar",
+    "cryptocars": {
+        "name": "CryptoCars (CCAR)",
         "id": "cryptocars",
         "contract": "0x50332bdca94673f33401776365b66cc4e81ac81d",
         "abi": dict_abis["ccar"],
         "web3_provider": web3_bsc,
     },
-    "cgar": {
-        "name": "cgar",
+    "cryptoguards": {
+        "name": "CryptoGuards (CGAR)",
         "id": "cryptoguards",
         "contract": "0x432c7cf1de2b97a013f1130f199ed9d1363215ba",
         "abi": dict_abis["cgar"],
         "web3_provider": web3_bsc,
     },
-    "bcoin": {
-        "name": "bombercoin",
+    "bomber-coin": {
+        "name": "Bomber Coin (BCOIN)",
         "id": "bomber-coin",
         "contract": "0x00e1656e45f18ec6747f5a8496fd39b50b38396d",
         "abi": dict_abis["bcoin"],
         "web3_provider": web3_bsc,
     },
     "zodiacs": {
-        "name": "zodiacs",
+        "name": "Zodiacs (ZDC)",
         "id": "zodiacs",
         "contract": "0x5649e392a1bac3e21672203589adf8f6c99f8db3",
         "abi": dict_abis["zodiacs"],
         "web3_provider": web3_bsc,
     },
-    "hct": {
-        "name": "hct",
+    "hero-cat-token": {
+        "name": "Hero Cat Token (HCT)",
         "id": "hero-cat-token",
         "contract": "cryptoplanes",
         "abi": dict_abis["hct"],
         "web3_provider": web3_bsc,
     },
-    "cpan": {
-        "name": "cpan",
+    "cryptoplanes": {
+        "name": "CryptoPlanes (CPAN)",
         "id": "cryptoplanes",
         "contract": "0x04260673729c5f2b9894a467736f3d85f8d34fc8",
         "abi": dict_abis["cpan"],
         "web3_provider": web3_bsc,
     },
-    "axs": {
-        "name": "axs",
+    "axie-infinity": {
+        "name": "Axie Infinity (AXS)",
         "id": "axie-infinity",
         "contract": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
         "abi": dict_abis["axs"],
         "web3_provider": web3_infura,
     },
-    "pvu": {
-        "name": "pvu",
+    "plant-vs-undead-token": {
+        "name": "Plant vs Undead Token (PVU)",
         "id": "plant-vs-undead-token",
         "contract": "0x31471e0791fcdbe82fbf4c44943255e923f1b794",
         "abi": dict_abis["pvu"],
         "web3_provider": web3_bsc,
     },
-    "eternal": {
-        "name": "eternal",
+    "cryptomines-eternal": {
+        "name": "CryptoMines Eternal (ETERNAL)",
         "id": "cryptomines-eternal",
         "contract": "0xd44fd09d74cd13838f137b590497595d6b3feea4",
         "abi": dict_abis["eternal"],
