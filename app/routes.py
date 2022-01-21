@@ -23,7 +23,7 @@ def handle_form(data):
     elif data['queryType']=='token':
         response = {'token': token_report(data=data, selected_tokens=data['gameTokensSelected']), 'query-type': data['queryType']}
     elif data['queryType']=='full-report':
-        response = {'crypto':crypto_report(data=data), 'token':token_report(data=data), 'query-type': data['queryType']}
+        response = {'crypto':crypto_report(data=data), 'token':token_report(data=data, selected_tokens=data['gameTokensSelected']), 'query-type': data['queryType']}
 
     if len(response) != 0:
         emit("computation", response)

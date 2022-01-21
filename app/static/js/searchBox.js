@@ -155,8 +155,6 @@ const searchBox = (gameTokens) => {
         activeTokens.push(tokenItems[i].active);
       }
     }
-    console.log(tokenItems);
-    console.log(activeTokens);
 
     if (tokenItems === undefined || activeTokens.every((x) => x === false)) {
       const boxButtons = document.querySelector(".box-buttons");

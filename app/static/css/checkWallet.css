@@ -162,11 +162,18 @@ h1 {
   background-color: white;
 }
 
+.error-no-wallet {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  color: red;
+}
+
 .radio {
   text-align: center;
   width: 20%;
   margin: auto;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }
