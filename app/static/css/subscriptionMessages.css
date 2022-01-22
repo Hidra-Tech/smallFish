@@ -1,0 +1,8 @@
+.thanks {
+  display: flex;
+  flex-direction: column;
+}
+
+.thanks-message {
+  font-size: large;
+}

@@ -34,7 +34,21 @@ p {
   margin-bottom: 10px;
 }
 
+@font-face {
+  font-family: "SEGA LOGO FONT";
+  font-style: normal;
+  font-weight: normal;
+  src: local("SEGA LOGO FONT"), url("SEGA.woff") format("woff");
+}
+
 /* CLASSES */
+
+.main-name {
+  font-family: "SEGA LOGO FONT";
+  font-size: 100px;
+  color: #3c4fe0;
+  margin-bottom: 20px;
+}
 
 .parent {
   margin: 0;
@@ -112,7 +126,7 @@ p {
 }
 
 .show-modal {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 600;
   padding-right: 20px;
   border: none;
@@ -159,4 +173,23 @@ p {
   margin-top: 30px;
   width: 30px;
   height: 30px;
+}
+
+.subscription-plan {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  gap: 100px;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  /* font-family: "SEGA LOGO FONT"; */
+  font-size: 40px;
+}
+
+.order-form {
+  display: flex;
+  justify-content: center;
 }
