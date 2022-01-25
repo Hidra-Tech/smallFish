@@ -93,7 +93,7 @@
 
 <div class="subscription-plan">
   <div class="price">
-    {{ "$%.f"|format(products['all_apps'].price / 100) }} USD
+    {{ "$%.f"|format(products['small_fish_apps'].price / 100) }} USD
   </div>
   <form class="order-form" method="POST" action="/order/{{ product_id }}">
     <input class="button-app" type="submit" value="Subscribe">

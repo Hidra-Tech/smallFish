@@ -9,6 +9,10 @@ import json
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51KKRQFCRWNkVadnHeB06MyhXDhsiQHeMh5xhm7h8Agmhdl59gWYbKHNWIP9kofkiw8Lck17ljOdS2K8KpnNJzs8Y00aSyD0jzW'
+# app.config['STRIPE_SECRET_KEY'] = 'sk_test_51KKRQFCRWNkVadnHRvI9eGONfxDccbSoB6fb4h0eqnOln10EsWDWV7eUNZch1c5dvelV5ymsZHR8XxCUkK8dXPSD00xYZGXO1J'
+
+# app.config.from_object(Config)
 socketio = SocketIO(app)
 
 bsc = "https://bsc-dataseed.binance.org/"

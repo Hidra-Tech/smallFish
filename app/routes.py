@@ -8,21 +8,19 @@ from app import (
     token_metadata,
     crypto_metadata,
 )
-from flask import render_template, url_for, request, abort
+from flask import render_template, url_for, request, abort, redirect
 import stripe
 import os
 from flask_socketio import SocketIO, send, emit
 from pycoingecko import CoinGeckoAPI
 from traceback import print_exc
 
-# stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
+stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 
 products = {
-    "all_apps": {
-        "name": "Plano completo",
+    "small_fish_apps":{
+        "name": "small_fish_apps",
         "price": 500,
-        "currency": "usd",
-        "per": "month",
     },
 }
 
@@ -32,7 +30,7 @@ cg = CoinGeckoAPI()
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", products=products, product_id="all_apps")
+    return render_template("index.html", products=products, product_id="small_fish_apps")
 
 
 @app.route("/checkWallet")
@@ -116,29 +114,28 @@ def token_report(data: dict, selected_tokens: list):
 
 @app.route("/order/<product_id>", methods=["POST"])
 def order(product_id):
-    print(product_id)
     if product_id not in products:
         abort(404)
 
-    list_items = [
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
             {
-                "price_data": {
-                    "recurring": "month",
-                    "currency": "usd",
-                    "unit_amount": products[product_id]["price"],
-                    "quantity": 1,
-                    "product_data": {
-                        "name": products[product_id]["name"],
+                'price_data': {
+                    'product_data': {
+                        'name': products[product_id]['name'],
                     },
+                    'unit_amount': products[product_id]['price'],
+                    'currency': 'usd',
+                    'recurring': {
+                        'interval':'month'
+                    }
                 },
+                'quantity': 1,
             },
         ],
-    print(list_items)
-    checkout_session = stripe.checkout.Session.create(
-        line_items=list_items,
-        payment_method_types=["card"],
-        mode="subscription",
-        success_url=request.host_url + "order/success",
-        cancel_url=request.host_url + "order/cancel",
+        payment_method_types=['card'],
+        mode='subscription',
+        success_url=request.host_url + 'order/success',
+        cancel_url=request.host_url + 'order/cancel',
     )
     return redirect(checkout_session.url)
