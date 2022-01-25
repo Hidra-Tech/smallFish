@@ -7,6 +7,7 @@ from app import (
     web3_infura,
     token_metadata,
     crypto_metadata,
+    db
 )
 from flask import render_template, url_for, request, abort, redirect, flash
 import stripe
@@ -19,6 +20,7 @@ from flask_login import current_user, login_user, logout_user
 from app.models import User
 from flask_login import login_required
 from werkzeug.urls import url_parse
+from app.forms import RegistrationForm
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
@@ -35,7 +37,7 @@ cg = CoinGeckoAPI()
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", products=products, product_id="small_fish_apps")
+    return render_template("index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,8 +58,25 @@ def login():
 
 @app.route('/logout')
 def logout():
+    print(current_user.is_authenticated)
     logout_user()
+    print(current_user.is_authenticated)
     return redirect(url_for('index'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form, product_id="small_fish_apps")
+
 
 @app.route("/checkWallet")
 @login_required

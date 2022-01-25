@@ -35,8 +35,18 @@
       <nav>
         <button class="show-modal">About</button>
         <button class="show-modal">Apps</button>
-        <button class="show-modal">Pricing</button>
-        <button class="show-modal">Login</button>
+        {% if current_user.is_anonymous %}
+        <form class="form-nav" action="{{ url_for('register') }}">
+          <button class="link-nav">Sign up</button>
+        </form>
+        <form class="form-nav" action="{{ url_for('login') }}">
+          <button class="link-nav">Login</button>
+        </form>
+        {% else %}
+        <form class="form-nav" action="{{ url_for('logout') }}">
+          <button class="link-nav">Logout</button>
+        </form>
+        {% endif %}
         <button class="show-modal">Contact</button>
       </nav>
     </div>
@@ -118,53 +128,9 @@
       >
     </div>
 
-    <!-- PRICING -->
-
+    <!-- Contact -->
     <div class="modal child-three hidden">
       <button class="close xchild-three">&times;</button>
-
-      <h1>Pricing</h1>
-
-      <p>
-        SF's business model is based on a subscription service that gives access
-        to a set of web apps. To see available apps, click on the
-        <i>Apps</i> link on the home page. If any app interests you, click below
-        on the <i>Subscribe</i> button and subscribe to our service. The
-        subscription gives you access to all SF apps, including those yet to be
-        released. A list of Apps in development can be found in the
-        <i>Roadmap</i> section.
-      </p>
-
-      <div class="subscription-plan">
-        <div class="price">
-          {{ "$%.f"|format(products['small_fish_apps'].price / 100) }} USD
-        </div>
-        <form class="order-form" method="POST" action="/order/{{ product_id }}">
-          <input class="button-app" type="submit" value="Subscribe" />
-        </form>
-      </div>
-    </div>
-
-    <!-- LOGIN -->
-    <div class="modal child-four hidden">
-      <button class="close xchild-four">&times;</button>
-
-      <div class="welcome-user-container">
-        <div class="greeting-user">
-          <div class="user-welcome">New here? Sign up!</div>
-          <a class="button-app" href="{{ url_for('login') }}">Sign in</a>
-        </div>
-
-        <div class="greeting-user">
-          <div class="user-welcome">Already, signed up! Just log in!</div>
-          <a class="button-app" href="{{ url_for('login') }}">Login</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contact -->
-    <div class="modal child-five hidden">
-      <button class="close xchild-five">&times;</button>
 
       <div class="social">
         <a href="https://discord.gg/tDkN7HFyRf" target="blank">
