@@ -1,36 +1,81 @@
-from app import app, socketio, crypto_balance, token_balance, web3_bsc, web3_infura, token_metadata, crypto_metadata
-from flask import render_template, url_for, request
+from app import (
+    app,
+    socketio,
+    crypto_balance,
+    token_balance,
+    web3_bsc,
+    web3_infura,
+    token_metadata,
+    crypto_metadata,
+)
+from flask import render_template, url_for, request, abort, redirect
+import stripe
+import os
 from flask_socketio import SocketIO, send, emit
 from pycoingecko import CoinGeckoAPI
 from traceback import print_exc
 
+stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
+
+products = {
+    "small_fish_apps":{
+        "name": "small_fish_apps",
+        "price": 500,
+    },
+}
+
 cg = CoinGeckoAPI()
+
 
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", products=products, product_id="small_fish_apps")
+
 
 @app.route("/checkWallet")
 def checkWallet():
     return render_template("checkWallet.html")
 
+
 @socketio.on("form")
 def handle_form(data):
     response = {}
-    if data['queryType']=='crypto':
-        response = {'crypto': crypto_report(data=data), 'query-type': data['queryType']}  
-    elif data['queryType']=='token':
-        response = {'token': token_report(data=data, selected_tokens=data['gameTokensSelected']), 'query-type': data['queryType']}
-    elif data['queryType']=='full-report':
-        response = {'crypto':crypto_report(data=data), 'token':token_report(data=data, selected_tokens=data['gameTokensSelected']), 'query-type': data['queryType']}
+    if data["queryType"] == "crypto":
+        response = {"crypto": crypto_report(data=data), "query-type": data["queryType"]}
+    elif data["queryType"] == "token":
+        response = {
+            "token": token_report(
+                data=data, selected_tokens=data["gameTokensSelected"]
+            ),
+            "query-type": data["queryType"],
+        }
+    elif data["queryType"] == "full-report":
+        response = {
+            "crypto": crypto_report(data=data),
+            "token": token_report(
+                data=data, selected_tokens=data["gameTokensSelected"]
+            ),
+            "query-type": data["queryType"],
+        }
 
     if len(response) != 0:
         emit("computation", response)
     else:
         emit("errorCrypto")
 
-def crypto_report(data:dict):
+
+@app.route("/order/success")
+def success():
+    return render_template("success.html")
+
+
+@app.route("/order/cancel")
+def cancel():
+    return render_template("cancel.html")
+
+
+def crypto_report(data: dict):
     crypto_dict = {}
     for crypto in crypto_metadata.values():
         crypto_dict.update(
@@ -45,16 +90,19 @@ def crypto_report(data:dict):
         )
     return crypto_dict
 
-def token_report(data:dict, selected_tokens: list):
+
+def token_report(data: dict, selected_tokens: list):
     token_dict = {}
-    token_metadata_filtered = {k:v for k,v in token_metadata.items() if k in selected_tokens}
+    token_metadata_filtered = {
+        k: v for k, v in token_metadata.items() if k in selected_tokens
+    }
     for token in token_metadata_filtered.values():
         token_dict.update(
             {
                 token["name"]: token_balance(
                     address=data["address"],
-                    contract=token['contract'],
-                    abi=token['abi'],
+                    contract=token["contract"],
+                    abi=token["abi"],
                     id=token["id"],
                     currency=data["currency"].lower(),
                     web3_provider=token["web3_provider"],
@@ -62,3 +110,32 @@ def token_report(data:dict, selected_tokens: list):
             }
         )
     return token_dict
+
+
+@app.route("/order/<product_id>", methods=["POST"])
+def order(product_id):
+    if product_id not in products:
+        abort(404)
+
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                'price_data': {
+                    'product_data': {
+                        'name': products[product_id]['name'],
+                    },
+                    'unit_amount': products[product_id]['price'],
+                    'currency': 'usd',
+                    'recurring': {
+                        'interval':'month'
+                    }
+                },
+                'quantity': 1,
+            },
+        ],
+        payment_method_types=['card'],
+        mode='subscription',
+        success_url=request.host_url + 'order/success',
+        cancel_url=request.host_url + 'order/cancel',
+    )
+    return redirect(checkout_session.url)
