@@ -5,10 +5,16 @@ from check_wallet import crypto_balance, token_balance
 from glob import glob
 from web3 import Web3
 import json
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+login = LoginManager(app)
+login.login_view = 'login'
 # app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51KKRQFCRWNkVadnHeB06MyhXDhsiQHeMh5xhm7h8Agmhdl59gWYbKHNWIP9kofkiw8Lck17ljOdS2K8KpnNJzs8Y00aSyD0jzW'
 # app.config['STRIPE_SECRET_KEY'] = 'sk_test_51KKRQFCRWNkVadnHRvI9eGONfxDccbSoB6fb4h0eqnOln10EsWDWV7eUNZch1c5dvelV5ymsZHR8XxCUkK8dXPSD00xYZGXO1J'
 
@@ -102,4 +108,4 @@ token_metadata = {
     },
 }
 
-from app import routes
+from app import routes, models

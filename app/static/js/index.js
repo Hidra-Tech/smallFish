@@ -7,11 +7,13 @@ const childOne = document.querySelector(".child-one");
 const childTwo = document.querySelector(".child-two");
 const childThree = document.querySelector(".child-three");
 const childFour = document.querySelector(".child-four");
+const childFive = document.querySelector(".child-five");
 const overlay = document.querySelector(".overlay");
 const btnCloseChildOne = document.querySelector(".xchild-one");
 const btnCloseChildTwo = document.querySelector(".xchild-two");
 const btnCloseChildThree = document.querySelector(".xchild-three");
 const btnCloseChildFour = document.querySelector(".xchild-four");
+const btnCloseChildFive = document.querySelector(".xchild-five");
 const btnsOpenModal = document.querySelectorAll(".show-modal");
 // other buttons
 const cloneButtonDiscord = document.querySelector(".discord-clone");
@@ -46,6 +48,11 @@ const closeChildFour = function () {
   overlay.classList.add("hidden");
 };
 
+const closeChildFive = function () {
+  childFive.classList.add("hidden");
+  overlay.classList.add("hidden");
+};
+
 btnsOpenModal[0].addEventListener("click", () => {
   childOne.classList.remove("hidden");
   overlay.classList.remove("hidden");
@@ -66,15 +73,22 @@ btnsOpenModal[3].addEventListener("click", () => {
   overlay.classList.remove("hidden");
 });
 
+btnsOpenModal[4].addEventListener("click", () => {
+  childFive.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+});
+
 btnCloseChildOne.addEventListener("click", closeChildOne);
 btnCloseChildTwo.addEventListener("click", closeChildTwo);
 btnCloseChildThree.addEventListener("click", closeChildThree);
 btnCloseChildFour.addEventListener("click", closeChildFour);
+btnCloseChildFive.addEventListener("click", closeChildFive);
 
 overlay.addEventListener("click", closeChildOne);
 overlay.addEventListener("click", closeChildTwo);
 overlay.addEventListener("click", closeChildThree);
 overlay.addEventListener("click", closeChildFour);
+overlay.addEventListener("click", closeChildFive);
 
 document.addEventListener("keydown", function (e) {
   // console.log(e.key);

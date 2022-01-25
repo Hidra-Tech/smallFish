@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Small Fish</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/index.css') }}"
+    />
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static',filename='css/base.css') }}"
+  />
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static',filename='css/subscriptionMessages.css') }}"
+  />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/buttons.css') }}"
+    />
+  </head>
+  
+  <body>
+    <div class="container-base">
+        <header class="headline-base">
+          <div class="main-name-base">Small Fish</div>
+        </header>
+  
+        <header>
+            <div class="line">
+                <a href="{{ url_for('index') }}"
+                  ><img
+                    class="logo-img"
+                    src="{{ url_for('static',filename='images/tunna.png') }}"
+                /></a>
+              </div>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+  </body>
+</html>

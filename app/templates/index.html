@@ -36,6 +36,7 @@
         <button class="show-modal">About</button>
         <button class="show-modal">Apps</button>
         <button class="show-modal">Pricing</button>
+        <button class="show-modal">Login</button>
         <button class="show-modal">Contact</button>
       </nav>
     </div>
@@ -46,15 +47,34 @@
 
       <h1>What is Small Fish?</h1>
       <p>
-        <strong>Small Fish</strong> is an initiative that seeks to professionalize the work environment of NFT game players, offering infrastructure for their activity. The fundamental idea of SF is to democratize playing conditions in the NFT gaming ecosystem. Large investors have access to sophisticated software, that automate the purchase and sale of coins and even the activities in the games. On the other hand, other players do all their operations without the aid of tools or using rudimentary ones, such as manually filled spreadsheets. Our proposal is to offer software infrastructure that allows every player to focus on his activity, while having control over his investments.
+        <strong>Small Fish</strong> is an initiative that seeks to
+        professionalize the work environment of NFT game players, offering
+        infrastructure for their activity. The fundamental idea of SF is to
+        democratize playing conditions in the NFT gaming ecosystem. Large
+        investors have access to sophisticated software, that automate the
+        purchase and sale of coins and even the activities in the games. On the
+        other hand, other players do all their operations without the aid of
+        tools or using rudimentary ones, such as manually filled spreadsheets.
+        Our proposal is to offer software infrastructure that allows every
+        player to focus on his activity, while having control over his
+        investments.
       </p>
 
       <p>
-        SF's business model is based on a subscription service that gives access to a set of web apps. To see available apps, click on the <i>Apps</i> link on the home page. If any app interests you, click on <i>Subscribe</i> and subscribe to our service. The subscription gives you access to all SF apps, including those yet to be released. A list of Apps in development can be found in the <i>Roadmap</i> section.
+        SF's business model is based on a subscription service that gives access
+        to a set of web apps. To see available apps, click on the
+        <i>Apps</i> link on the home page. If any app interests you, click on
+        <i>Subscribe</i> and subscribe to our service. The subscription gives
+        you access to all SF apps, including those yet to be released. A list of
+        Apps in development can be found in the <i>Roadmap</i> section.
       </p>
 
       <p>
-        Our philosophy is based on customer focus and, for this reason, we maintain permanent communication and support channels. Click on the <i>Contact</i> link to access our social networks. There you can send suggestions, report problems or difficulties in using the apps and praise them.
+        Our philosophy is based on customer focus and, for this reason, we
+        maintain permanent communication and support channels. Click on the
+        <i>Contact</i> link to access our social networks. There you can send
+        suggestions, report problems or difficulties in using the apps and
+        praise them.
       </p>
     </div>
 
@@ -65,16 +85,31 @@
       <h1 class="app-name">Check Wallet</h1>
 
       <p>
-        <strong>Check Wallet</strong> is a tool that allows the user to check the Metamask balance in any chosen feat currency. Balance checking is available in three modes: <i>crypto</i>, <i>game tokens</i> and <i>full report</i>. The <i>crypto</i> mode allows accessing the balance of the Metamask in the main cryptocurrencies, BNB, Bitcoin and Ethereum. To access the results, the user only needs to provide the public address of Metamask.
+        <strong>Check Wallet</strong> is a tool that allows the user to check
+        the Metamask balance in any chosen feat currency. Balance checking is
+        available in three modes: <i>crypto</i>, <i>game tokens</i> and
+        <i>full report</i>. The <i>crypto</i> mode allows accessing the balance
+        of the Metamask in the main cryptocurrencies, BNB, Bitcoin and Ethereum.
+        To access the results, the user only needs to provide the public address
+        of Metamask.
       </p>
 
       <p>
-        In the <i>game tokens</i> mode, in addition to the public address of the Metamask, it is necessary to inform which games the user would like to check the balance of tokens. It is important to note that the CW return in this case refers to the balance of tokens on Metamask and thus excludes the balance of tokens invested in the game. Soon, it will be possible to estimate the total investment of the user in the games with the <strong>Track Wallet</strong>, a tool to be launched by SF, according to <i>Roadmap</i>.
+        In the <i>game tokens</i> mode, in addition to the public address of the
+        Metamask, it is necessary to inform which games the user would like to
+        check the balance of tokens. It is important to note that the CW return
+        in this case refers to the balance of tokens on Metamask and thus
+        excludes the balance of tokens invested in the game. Soon, it will be
+        possible to estimate the total investment of the user in the games with
+        the <strong>Track Wallet</strong>, a tool to be launched by SF,
+        according to <i>Roadmap</i>.
       </p>
 
       <p>
-        Finally, by selecting the <i>full report</i> option, the user will have access to the balance of crypto and game tokens on the selected Metamask. 
-        
+        Finally, by selecting the <i>full report</i> option, the user will have
+        access to the balance of crypto and game tokens on the selected
+        Metamask.
+
         <!-- Still not sure how <strong>Check Wallet</strong> works? Watch the video below, where we show in practice how the tool works. -->
       </p>
 
@@ -83,27 +118,53 @@
       >
     </div>
 
+    <!-- PRICING -->
+
     <div class="modal child-three hidden">
       <button class="close xchild-three">&times;</button>
 
       <h1>Pricing</h1>
 
       <p>
-          SF's business model is based on a subscription service that gives access to a set of web apps. To see available apps, click on the <i>Apps</i> link on the home page. If any app interests you, click below on the <i>Subscribe</i> button and subscribe to our service. The subscription gives you access to all SF apps, including those yet to be released. A list of Apps in development can be found in the <i>Roadmap</i> section.
-
-<div class="subscription-plan">
-  <div class="price">
-    {{ "$%.f"|format(products['small_fish_apps'].price / 100) }} USD
-  </div>
-  <form class="order-form" method="POST" action="/order/{{ product_id }}">
-    <input class="button-app" type="submit" value="Subscribe">
-  </form>
-</div>
+        SF's business model is based on a subscription service that gives access
+        to a set of web apps. To see available apps, click on the
+        <i>Apps</i> link on the home page. If any app interests you, click below
+        on the <i>Subscribe</i> button and subscribe to our service. The
+        subscription gives you access to all SF apps, including those yet to be
+        released. A list of Apps in development can be found in the
+        <i>Roadmap</i> section.
       </p>
+
+      <div class="subscription-plan">
+        <div class="price">
+          {{ "$%.f"|format(products['small_fish_apps'].price / 100) }} USD
+        </div>
+        <form class="order-form" method="POST" action="/order/{{ product_id }}">
+          <input class="button-app" type="submit" value="Subscribe" />
+        </form>
+      </div>
     </div>
 
+    <!-- LOGIN -->
     <div class="modal child-four hidden">
       <button class="close xchild-four">&times;</button>
+
+      <div class="welcome-user-container">
+        <div class="greeting-user">
+          <div class="user-welcome">New here? Sign up!</div>
+          <a class="button-app" href="{{ url_for('login') }}">Sign in</a>
+        </div>
+
+        <div class="greeting-user">
+          <div class="user-welcome">Already, signed up! Just log in!</div>
+          <a class="button-app" href="{{ url_for('login') }}">Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="modal child-five hidden">
+      <button class="close xchild-five">&times;</button>
 
       <div class="social">
         <a href="https://discord.gg/tDkN7HFyRf" target="blank">
@@ -120,6 +181,8 @@
           title="click to copy"
         />
       </div>
+
+      <!-- <h1 class="app-name">Check Wallet</h1> -->
     </div>
 
     <div class="overlay hidden"></div>

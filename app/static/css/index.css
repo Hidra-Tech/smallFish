@@ -193,3 +193,23 @@ p {
   display: flex;
   justify-content: center;
 }
+
+.welcome-user-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.greeting-user {
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 220px;
+}
