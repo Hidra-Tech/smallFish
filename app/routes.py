@@ -23,6 +23,7 @@ from werkzeug.urls import url_parse
 from app.forms import RegistrationForm
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
+webhook_secret = app.config['STRIPE_WEBHOOK_SECRET']
 
 products = {
     "small_fish_apps":{
@@ -68,13 +69,14 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
+    # print(form.username.data)
+    # if form.validate_on_submit():
+    #     user = User(username=form.username.data, email=form.email.data)
+    #     user.set_password(form.password.data)
+    #     db.session.add(user)
+    #     db.session.commit()
+    #     flash('Congratulations, you are now a registered user!')
+    #     return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form, product_id="small_fish_apps")
 
 
@@ -163,6 +165,9 @@ def order(product_id):
     if product_id not in products:
         abort(404)
 
+    global form
+    form = RegistrationForm()
+
     checkout_session = stripe.checkout.Session.create(
         line_items=[
             {
@@ -185,3 +190,25 @@ def order(product_id):
         cancel_url=request.host_url + 'order/cancel',
     )
     return redirect(checkout_session.url)
+
+@app.route('/event', methods=['POST'])
+def new_event():
+    event = None
+    payload = request.data
+    signature = request.headers['STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, signature, webhook_secret)
+    except Exception as e:
+        # the payload could not be verified
+        abort(400)
+
+    if event['type'] == 'checkout.session.completed':
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        
+    return {'success': True}
+
