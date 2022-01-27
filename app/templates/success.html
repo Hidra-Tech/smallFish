@@ -1,12 +1,12 @@
 {% extends "base.html" %} {% block content %}
 <div class="thanks">
-  <div class="thanks-message">Thank You</div>
-  <div class="donate">
-    If in addition to subscribing to our service you want to further support
-    <strong>Small Fish</strong>, please consider donating BNB in the wallet
-    below:
+  <div class="thanks-message">
+    <img
+      src="{{ url_for('static',filename='images/michael-scott-the-office.gif') }}"
+      alt="michael-scott-the-office"
+    />
   </div>
-
-  <div class="donate-address"></div>
+  <div class="redirect-message">We are redirecting you to home page</div>
+  <div class="redirect-clock">10</div>
 </div>
 {% endblock %}

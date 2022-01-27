@@ -8,6 +8,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    stripe_session = db.Column(db.String(120), index=True, unique=True)
+    active = db.Column(db.Boolean, unique=False, default=False)
+    date = db.Column(db.DateTime, unique=False)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

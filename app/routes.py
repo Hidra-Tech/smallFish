@@ -21,6 +21,9 @@ from app.models import User
 from flask_login import login_required
 from werkzeug.urls import url_parse
 from app.forms import RegistrationForm
+from datetime import datetime
+import sqlite3
+import pandas as pd
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 webhook_secret = app.config['STRIPE_WEBHOOK_SECRET']
@@ -115,6 +118,7 @@ def handle_form(data):
 
 @app.route("/order/success")
 def success():
+    login_user(current_user)
     return render_template("success.html")
 
 
@@ -165,9 +169,6 @@ def order(product_id):
     if product_id not in products:
         abort(404)
 
-    global form
-    form = RegistrationForm()
-
     checkout_session = stripe.checkout.Session.create(
         line_items=[
             {
@@ -189,6 +190,20 @@ def order(product_id):
         success_url=request.host_url + 'order/success',
         cancel_url=request.host_url + 'order/cancel',
     )
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, 
+        email=form.email.data, 
+        stripe_session=checkout_session.stripe_id,
+        # active=False,
+        date=datetime.now())
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+    print(checkout_session.stripe_id)
+
     return redirect(checkout_session.url)
 
 @app.route('/event', methods=['POST'])
@@ -205,10 +220,31 @@ def new_event():
         abort(400)
 
     if event['type'] == 'checkout.session.completed':
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        session = stripe.checkout.Session.retrieve(
+        event['data']['object'].id, expand=['line_items'])
+        print(session.id)
+
+        connection = sqlite3.connect('database/app.db')
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE user 
+            SET active = true
+            WHERE stripe_session = '{}'
+            """.format(session.id))
+        connection.commit()
+        connection.close()
+    else:
+        connection = sqlite3.connect('database/app.db')
+        cursor = connection.cursor()
+        cursor.execute("""
+            DELETE FROM user
+            WHERE active = false
+            """)
+        connection.commit()
+        connection.close()
+
+        
+
         
     return {'success': True}
 
