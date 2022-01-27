@@ -49,22 +49,43 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+        connection = sqlite3.connect('database/app.db')
+        df = pd.read_sql_query('''
+        SELECT *
+        FROM user
+        WHERE username='{}'
+        '''.format(form.username.data), connection)
+        if (df.shape[0]==0):
+            flash('Invalid username')
             return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        else:
+            user_info = df.to_dict('records')[0]
+            user = User.query.filter_by(username=user_info['username']).first()
+            if (not user.check_password(form.password.data)):
+                flash('Invalid password')
+                return redirect(url_for('login'))
+            elif (user_info['active']==False):
+                flash('This user is registered in a free account. To use the paid apps, please sign up again and confirm the payment.')
+                cursor = connection.cursor()
+                cursor.execute("""
+                    DELETE FROM user
+                    WHERE username = '{}'
+                    """.format(user_info['username']))
+                connection.commit()
+                connection.close()
+                return redirect(url_for('login'))
+            else:
+                login_user(user, remember=form.remember_me.data)
+                next_page = request.args.get('next')
+                if not next_page or url_parse(next_page).netloc != '':
+                    next_page = url_for('index')
+                connection.close()
+                return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
-    print(current_user.is_authenticated)
     logout_user()
-    print(current_user.is_authenticated)
     return redirect(url_for('index'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -118,50 +139,24 @@ def handle_form(data):
 
 @app.route("/order/success")
 def success():
-    login_user(current_user)
+    connection = sqlite3.connect('database/app.db')
+    df = pd.read_sql_query('''
+        SELECT *
+        FROM user
+        WHERE active=true
+        ORDER BY subscribed_at DESC
+        ''', connection)
+    user_info = df.to_dict('records')[0]
+    print(user_info)
+    connection.close()
+    user = User.query.filter_by(username=user_info['username']).first()
+    login_user(user)
     return render_template("success.html")
 
 
 @app.route("/order/cancel")
 def cancel():
     return render_template("cancel.html")
-
-
-def crypto_report(data: dict):
-    crypto_dict = {}
-    for crypto in crypto_metadata.values():
-        crypto_dict.update(
-            {
-                crypto["name"]: crypto_balance(
-                    address=data["address"],
-                    id=crypto["id"],
-                    currency=data["currency"].lower(),
-                    web3_provider=crypto["web3_provider"],
-                )
-            }
-        )
-    return crypto_dict
-
-
-def token_report(data: dict, selected_tokens: list):
-    token_dict = {}
-    token_metadata_filtered = {
-        k: v for k, v in token_metadata.items() if k in selected_tokens
-    }
-    for token in token_metadata_filtered.values():
-        token_dict.update(
-            {
-                token["name"]: token_balance(
-                    address=data["address"],
-                    contract=token["contract"],
-                    abi=token["abi"],
-                    id=token["id"],
-                    currency=data["currency"].lower(),
-                    web3_provider=token["web3_provider"],
-                )
-            }
-        )
-    return token_dict
 
 
 @app.route("/order/<product_id>", methods=["POST"])
@@ -197,7 +192,7 @@ def order(product_id):
         email=form.email.data, 
         stripe_session=checkout_session.stripe_id,
         # active=False,
-        date=datetime.now())
+        subscribed_at=datetime.now())
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -242,9 +237,56 @@ def new_event():
             """)
         connection.commit()
         connection.close()
-
-        
-
-        
+    
     return {'success': True}
+
+@app.route('/subscription', methods=['POST'])
+def subscription():
+    # get transaction id in database
+
+    # then
+
+    # stripe.Subscription.delete(
+    # sub_id,
+    # )
+
+    # update table: active to False
+    return render_template("subscription.html")
+
+def crypto_report(data: dict):
+    crypto_dict = {}
+    for crypto in crypto_metadata.values():
+        crypto_dict.update(
+            {
+                crypto["name"]: crypto_balance(
+                    address=data["address"],
+                    id=crypto["id"],
+                    currency=data["currency"].lower(),
+                    web3_provider=crypto["web3_provider"],
+                )
+            }
+        )
+    return crypto_dict
+
+
+def token_report(data: dict, selected_tokens: list):
+    token_dict = {}
+    token_metadata_filtered = {
+        k: v for k, v in token_metadata.items() if k in selected_tokens
+    }
+    for token in token_metadata_filtered.values():
+        token_dict.update(
+            {
+                token["name"]: token_balance(
+                    address=data["address"],
+                    contract=token["contract"],
+                    abi=token["abi"],
+                    id=token["id"],
+                    currency=data["currency"].lower(),
+                    web3_provider=token["web3_provider"],
+                )
+            }
+        )
+    return token_dict
+
 

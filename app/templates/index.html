@@ -32,23 +32,33 @@
         </div>
       </header>
 
+      {% if current_user.is_anonymous %}
       <nav>
         <button class="show-modal">About</button>
         <button class="show-modal">Apps</button>
-        {% if current_user.is_anonymous %}
         <form class="form-nav" action="{{ url_for('register') }}">
           <button class="link-nav">Sign up</button>
         </form>
         <form class="form-nav" action="{{ url_for('login') }}">
           <button class="link-nav">Login</button>
         </form>
-        {% else %}
-        <form class="form-nav" action="{{ url_for('logout') }}">
-          <button class="link-nav">Logout</button>
-        </form>
-        {% endif %}
         <button class="show-modal">Contact</button>
       </nav>
+      {% else %}
+      <nav>
+        <button class="show-modal" style="font-size: 2.7rem">About</button>
+        <button class="show-modal" style="font-size: 2.7rem">Apps</button>
+        <form class="form-nav" action="{{ url_for('logout') }}">
+          <button class="show-modal" style="font-size: 2.7rem">Contact</button>
+          <button class="link-nav" style="font-size: 2.7rem">Logout</button>
+        </form>
+        <form class="form-nav" action="{{ url_for('index') }}">
+          <button class="link-nav" style="font-size: 2.7rem">
+            Subscription
+          </button>
+        </form>
+      </nav>
+      {% endif %}
     </div>
 
     <!-- ABOUT -->
