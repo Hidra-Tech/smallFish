@@ -193,7 +193,7 @@ def order(product_id):
         email=form.email.data, 
         stripe_id=checkout_session.stripe_id,
         # active=False,
-        subscribed_at=datetime.now())
+        subscribed_at=datetime.utcnow())
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -265,7 +265,7 @@ def cancellationConfirmed():
             cursor = connection.cursor()
             cursor.execute("""
                 UPDATE user 
-                SET active = false
+                SET active = false, canceled_at = datetime('now')
                 WHERE subscription_id = '{}'
                 """.format(user.subscription_id))
             connection.commit()
