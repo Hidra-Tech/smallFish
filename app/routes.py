@@ -24,6 +24,7 @@ from app.forms import RegistrationForm
 from datetime import datetime
 import sqlite3
 import pandas as pd
+from collections import defaultdict
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 webhook_secret = app.config['STRIPE_WEBHOOK_SECRET']
@@ -190,7 +191,7 @@ def order(product_id):
     if form.validate_on_submit():
         user = User(username=form.username.data, 
         email=form.email.data, 
-        stripe_session=checkout_session.stripe_id,
+        stripe_id=checkout_session.stripe_id,
         # active=False,
         subscribed_at=datetime.now())
         user.set_password(form.password.data)
@@ -214,44 +215,64 @@ def new_event():
         # the payload could not be verified
         abort(400)
 
-    if event['type'] == 'checkout.session.completed':
-        session = stripe.checkout.Session.retrieve(
-        event['data']['object'].id, expand=['line_items'])
-        print(session.id)
+    subscription_dict_items = event['data']['object'].items()
+    subscription_default_dict = defaultdict(list)
+    for (k,v) in subscription_dict_items:
+        subscription_default_dict[k].append(v)
 
+    subscription_dict = dict(subscription_default_dict)
+    subscription_id = subscription_dict['subscription'][0]
+
+    stripe_id = event['data']['object'].stripe_id
+
+    if event['type'] == 'checkout.session.completed':
         connection = sqlite3.connect('database/app.db')
         cursor = connection.cursor()
         cursor.execute("""
             UPDATE user 
-            SET active = true
-            WHERE stripe_session = '{}'
-            """.format(session.id))
+            SET active = true, subscription_id = '{}'
+            WHERE stripe_id = '{}'
+            """.format(subscription_id, stripe_id))
         connection.commit()
         connection.close()
     else:
         connection = sqlite3.connect('database/app.db')
         cursor = connection.cursor()
         cursor.execute("""
-            DELETE FROM user
-            WHERE active = false
-            """)
+            UPDATE user 
+            SET active = false, subscription_id = '{}'
+            WHERE stripe_id = '{}'
+            """.format(subscription_id, stripe_id))
         connection.commit()
         connection.close()
     
     return {'success': True}
 
-@app.route('/subscription', methods=['POST'])
+@login_required
+@app.route('/subscription', methods=['POST', 'GET'])
 def subscription():
-    # get transaction id in database
+    user = current_user
 
-    # then
+    return render_template("subscription.html", user=user)
 
-    # stripe.Subscription.delete(
-    # sub_id,
-    # )
+@app.route('/cancellationConfirmed', methods=['POST', 'GET'])
+def cancellationConfirmed():
+    if request.method == 'POST':
+        if request.form['cancel_button'] == "Cancel Subscription":
+            user = User.query.filter_by(username=current_user.username).first()
+            stripe.Subscription.delete(user.subscription_id)
+            connection = sqlite3.connect('database/app.db')
+            cursor = connection.cursor()
+            cursor.execute("""
+                UPDATE user 
+                SET active = false
+                WHERE subscription_id = '{}'
+                """.format(user.subscription_id))
+            connection.commit()
+            connection.close()
+            logout_user()
 
-    # update table: active to False
-    return render_template("subscription.html")
+    return render_template("cancellationConfirmed.html")
 
 def crypto_report(data: dict):
     crypto_dict = {}

@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block content %}
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static',filename='css/subscription.css') }}"
+/>
+
+<h2 style="display: flex; justify-content: center">Your subscription info</h2>
+
+<div class="subinfo">
+  <div class="subinfo-row">
+    <div class="subinfo-key">Username:</div>
+    <div class="subinfo-value">{{ user.username }}</div>
+  </div>
+
+  <div class="subinfo-row">
+    <div class="subinfo-key">email:</div>
+    <div class="subinfo-value">{{ user.email }}</div>
+  </div>
+
+  <div class="subinfo-row">
+    <div class="subinfo-key">Member since:</div>
+    <div class="subinfo-value">
+      {{ user.subscribed_at.strftime("%m/%d/%Y") }}
+    </div>
+  </div>
+
+  <div class="subinfo-row">
+    <div class="subinfo-key">Plan:</div>
+    <div class="subinfo-value">All Apps</div>
+  </div>
+
+  <div class="subinfo-row">
+    <div class="subinfo-key">Subscription value:</div>
+    <div class="subinfo-value">5 U$</div>
+  </div>
+</div>
+
+<form
+  class="cancel-sub"
+  method="post"
+  action="{{ url_for('cancellationConfirmed') }}"
+>
+  <input
+    class="cancel-button"
+    name="cancel_button"
+    type="submit"
+    value="Cancel Subscription"
+  />
+</form>
+{% endblock %}

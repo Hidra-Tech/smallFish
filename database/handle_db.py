@@ -23,3 +23,10 @@ elif command=='delete-table':
     cursor.execute("DROP TABLE {}".format(table_name))
     connection.commit()
     connection.close()
+elif command=='delete-cases':
+    table_name = sys.argv[2]
+    connection = sqlite3.connect('app.db')
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM {}".format(table_name))
+    connection.commit()
+    connection.close()
