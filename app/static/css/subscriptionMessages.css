@@ -1,8 +1,11 @@
 .thanks {
   display: flex;
+  align-items: center;
   flex-direction: column;
+  gap: 30px;
 }
 
-.thanks-message {
-  font-size: large;
-}
+/* .thanks-message {
+  display: flex;
+  justify-content: center;
+} */

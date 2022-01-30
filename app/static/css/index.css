@@ -193,3 +193,45 @@ p {
   display: flex;
   justify-content: center;
 }
+
+.welcome-user-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.greeting-user {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* margin-left: 220px; */
+  /* background-color: red; */
+}
+
+.link-nav {
+  font-size: 3rem;
+  font-weight: 600;
+  padding-right: 20px;
+  border: none;
+  color: #444;
+  border-radius: 10rem;
+  cursor: pointer;
+  background-color: white;
+}
+
+.form-nav {
+  display: inline;
+}
+
+/* .start-right {
+  display: flex;
+  margin-left: 180px;
+} */

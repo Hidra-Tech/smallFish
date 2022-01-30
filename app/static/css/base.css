@@ -1,0 +1,16 @@
+.container-base {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  margin-left: 570px;
+  margin-right: 570px;
+}
+
+.main-name-base {
+  display: flex;
+  justify-content: center;
+  font-family: "SEGA LOGO FONT";
+  font-size: 100px;
+  color: #3c4fe0;
+  margin-bottom: 20px;
+}
