@@ -21,7 +21,7 @@ Session(app)
 socketio = SocketIO(app)
 
 bsc = "https://bsc-dataseed.binance.org/"
-infura_url = "https://mainnet.infura.io/v3/11ec2a0eff254af4a2017eae87b60f5d"
+infura_url = "add yout infura here"
 web3_bsc = Web3(Web3.HTTPProvider(bsc))
 web3_infura = Web3(Web3.HTTPProvider(infura_url))
 
